@@ -111,6 +111,7 @@ h4 {
   width: 100%;
   appearance: none;
   color: #acacac;
+  background: url('../src/assets/images/dropdown-arrow.svg') no-repeat 95% 50% ;
 }
 .form-input {
   margin-bottom: 1.5rem;
