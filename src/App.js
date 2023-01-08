@@ -20,6 +20,7 @@ import failedIcon from "../src/assets/images/failed.svg";
 import tickIcon from "../src/assets/images/tick-icon.svg";
 
 import "./App.css";
+import { onSendOtp, onVerifyOtp } from "./service/apiService";
 
 function App() {
   const [pageNumber, setPageNumber] = React.useState(4);
@@ -36,6 +37,12 @@ function App() {
   const [pan, setPan] = React.useState('');
   const [employmentState, setEmploymentState] = React.useState('');
   const [accountStatus, setAccountStatus] = React.useState('');
+  const [day, setDay] = React.useState('');
+  const [month, setMonth] = React.useState('');
+  const [year, setYear] = React.useState('');
+  const [error, setError] = React.useState('');
+  const [isError, setIsError] = React.useState('');
+  const [mobile, setMobile] = React.useState()
   let cancelToken;
 
   React.useEffect(() => {
@@ -85,7 +92,6 @@ function App() {
 
   const onSubmit = (d) => {
     setPageNumber(2);
-    console.log(d);
   };
 
   const onNameChange = (e) => {
@@ -137,7 +143,6 @@ function App() {
           setCompanies(Data);
         }
       } catch (error) {
-        // console.log(error);
       }
     } else if (searchText.length < 3) {
       setCompanies([]);
@@ -149,6 +154,83 @@ function App() {
     setCompanies([]);
   };
 
+  const inputDayReference = React.useRef(null);
+  const inputMonthReference = React.useRef(null);
+  const inputYearReference = React.useRef(null);
+
+  const onDayChange = (e) =>{
+    setIsError(false);
+    setError('');
+    setDay(e.target.value);
+    if(e.target.value === 0 || e.target.value > 31){
+      setIsError(true);
+      setError('The day must be between 1 and 31.');
+      return;
+    }
+    if(month === 2 || e.target.value > 28){
+      setIsError(true);
+      setError('The month must be between 1 and 28.');
+      return;
+    }
+    if(e.target.value > 4){
+      inputMonthReference.current.focus();
+    }
+    
+  }
+  const onMonthChange = (e) =>{
+    setIsError(false);
+    setError('');
+    setMonth(e.target.value);
+    if(e.target.value === 0 || e.target.value > 12){
+      setIsError(true);
+      setError('The month must be between 1 and 12.');
+      return;
+    }
+    if(e.target.value > 2){
+      inputYearReference.current.focus();
+    }
+  }
+  const onYearChange = (e) =>{
+    const currentYear = new Date().getFullYear();
+    setIsError(false);
+    setError('');
+    if(e.target.value > currentYear){setIsError(true);
+      setError('The year must be less than current year.');
+      return;
+    }
+    
+    setYear(e.target.value);
+  }
+  const onMobileChange = (e) =>{
+    setMobile(e.target.value)
+  }
+  const sendOtp = async (mobile) => {
+    if(!mobile) {
+      return;
+    }
+    if(mobile.length === 10) {
+      try {
+        const otpRes = await onSendOtp(mobile);
+      } catch (error) {
+        alert(error.data.message);
+      }
+    }
+  }
+  const verifyOtp = async (e) => {
+    if(!mobile) {
+      return;
+    }
+    if(!e.target.value) {
+      return;
+    }
+    if(e.target.value.length > 4) {
+      try {
+        const otpRes = await onVerifyOtp(mobile, e.target.value);
+      } catch (error) {
+        alert(error.data.message);
+      }
+    }
+  }
   return (
     <>
       {/* Header */}
@@ -535,13 +617,13 @@ function App() {
                           className="prefix-text"
                           disabled
                         />
-                        <input type="text" className="input-text" />
-                        <button type="button" className="btn">
+                        <input type="number" className="input-text" maxLength={10} onChange={(e)=> onMobileChange(e)} />
+                        <button type="button" className="btn" onClick={()=>sendOtp(mobile)}>
                           Get OTP
                         </button>
                       </div>
                       <div className="form-input" style={{ marginTop: 20 }}>
-                        <input className="input-box" />
+                        <input type='text' className="input-box" onChange={(e)=>verifyOtp(e)}/>
                       </div>
                     </div>
                     <div className="form-input">
@@ -549,14 +631,16 @@ function App() {
                         Date of Birth<sup>*</sup>
                       </label>
                       <div className="input-with-select">
-                        <input type="text" className="input-day" />
-                        <select className="input-select">
+                        <input type="text" ref={inputDayReference} className="input-day" maxength="2" value={day} onChange={(e)=> onDayChange(e)} />
+                        <input type="text" ref={inputMonthReference} className="input-select" maxLength="2" value={month} onChange={(e)=> onMonthChange(e)} />
+                        {/* <select className="input-select">
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
-                        </select>
-                        <input type="text" className="input-year" />
+                        </select> */}
+                        <input type="text" ref={inputYearReference} className="input-year" maxLength="4" value={year}onChange={(e)=> onYearChange(e)} />
                       </div>
+                      {isError && (<span className="error-msg">{error}</span>)}
                     </div>
                     <div className="terms-condition">
                       <input type="checkbox" />
