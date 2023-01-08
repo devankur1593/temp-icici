@@ -34,15 +34,15 @@ function App() {
   const [companies, setCompanies] = React.useState([]);
   const [company, setCompany] = React.useState("");
   const [salaryRange, setSalaryRange] = React.useState(0);
-  const [pan, setPan] = React.useState('');
-  const [employmentState, setEmploymentState] = React.useState('');
-  const [accountStatus, setAccountStatus] = React.useState('');
-  const [day, setDay] = React.useState('');
-  const [month, setMonth] = React.useState('');
-  const [year, setYear] = React.useState('');
-  const [error, setError] = React.useState('');
-  const [isError, setIsError] = React.useState('');
-  const [mobile, setMobile] = React.useState()
+  const [pan, setPan] = React.useState("");
+  const [employmentState, setEmploymentState] = React.useState("");
+  const [accountStatus, setAccountStatus] = React.useState("");
+  const [day, setDay] = React.useState("");
+  const [month, setMonth] = React.useState("");
+  const [year, setYear] = React.useState("");
+  const [error, setError] = React.useState("");
+  const [isError, setIsError] = React.useState("");
+  const [mobile, setMobile] = React.useState();
   let cancelToken;
 
   React.useEffect(() => {
@@ -109,17 +109,17 @@ function App() {
     }
   };
 
-  const onPanChange = e => {
+  const onPanChange = (e) => {
     setPan(e.target.value.toUpperCase());
   };
 
-  const onEmploymentStatus = (val) =>{
+  const onEmploymentStatus = (val) => {
     setEmploymentState(val);
-  }
+  };
 
-  const onAccountCheck = (val) =>{
+  const onAccountCheck = (val) => {
     setAccountStatus(val);
-  }
+  };
   const onCompanyChange = async (e) => {
     const searchText = e.target.value;
     setCompany(searchText);
@@ -142,8 +142,7 @@ function App() {
         if (Count) {
           setCompanies(Data);
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     } else if (searchText.length < 3) {
       setCompanies([]);
     }
@@ -158,79 +157,93 @@ function App() {
   const inputMonthReference = React.useRef(null);
   const inputYearReference = React.useRef(null);
 
-  const onDayChange = (e) =>{
+  const onDayChange = (e) => {
     setIsError(false);
-    setError('');
+    setError("");
     setDay(e.target.value);
-    if(e.target.value === 0 || e.target.value > 31){
+    if (e.target.value === 0 || e.target.value > 31) {
       setIsError(true);
-      setError('The day must be between 1 and 31.');
+      setError("The day must be between 1 and 31.");
       return;
     }
-    if(month === 2 || e.target.value > 28){
+    if (month === 2 || e.target.value > 28) {
       setIsError(true);
-      setError('The month must be between 1 and 28.');
+      setError("The month must be between 1 and 28.");
       return;
     }
-    if(e.target.value > 4){
+    if (e.target.value > 4) {
       inputMonthReference.current.focus();
     }
-    
-  }
-  const onMonthChange = (e) =>{
+  };
+  const onMonthChange = (e) => {
     setIsError(false);
-    setError('');
+    setError("");
     setMonth(e.target.value);
-    if(e.target.value === 0 || e.target.value > 12){
+    if (e.target.value === 0 || e.target.value > 12) {
       setIsError(true);
-      setError('The month must be between 1 and 12.');
+      setError("The month must be between 1 and 12.");
       return;
     }
-    if(e.target.value > 2){
+    if (e.target.value > 2) {
       inputYearReference.current.focus();
     }
-  }
-  const onYearChange = (e) =>{
+  };
+  const onYearChange = (e) => {
     const currentYear = new Date().getFullYear();
     setIsError(false);
-    setError('');
-    if(e.target.value > currentYear){setIsError(true);
-      setError('The year must be less than current year.');
+    setError("");
+    if (e.target.value > currentYear) {
+      setIsError(true);
+      setError("The year must be less than current year.");
       return;
     }
-    
+
     setYear(e.target.value);
-  }
-  const onMobileChange = (e) =>{
-    setMobile(e.target.value)
-  }
+  };
+  const onMobileChange = (e) => {
+    setMobile(e.target.value);
+  };
   const sendOtp = async (mobile) => {
-    if(!mobile) {
+    if (!mobile) {
       return;
     }
-    if(mobile.length === 10) {
+    if (mobile.length === 10) {
       try {
         const otpRes = await onSendOtp(mobile);
       } catch (error) {
         alert(error.data.message);
       }
     }
-  }
+  };
   const verifyOtp = async (e) => {
-    if(!mobile) {
+    if (!mobile) {
       return;
     }
-    if(!e.target.value) {
+    if (!e.target.value) {
       return;
     }
-    if(e.target.value.length > 4) {
+    if (e.target.value.length > 4) {
       try {
         const otpRes = await onVerifyOtp(mobile, e.target.value);
       } catch (error) {
         alert(error.data.message);
       }
     }
-  }
+  };
+  const onStepTwo = (d) => {
+    console.log("=======STEP 2 SUBMIT==");
+    console.log(d);
+  };
+
+  const onStepThree = (d) => {
+    console.log("=STEP 3=");
+    console.log(d);
+  };
+
+  const onStepFour = (d) => {
+    console.log("onStepFour called");
+    console.log(d);
+  };
   return (
     <>
       {/* Header */}
@@ -458,16 +471,40 @@ function App() {
                         What is your type of employment?
                       </label>
                       <div className="checkbox-container">
-                        <label className={`custom-checkbox radiobtn ${employmentState === 'salaried' && 'active'}`} htmlFor="salaried">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            employmentState === "salaried" && "active"
+                          }`}
+                          htmlFor="salaried"
+                        >
                           <div>
-                            <input type="radio" id="salaried" name="employmentState" value="salaried" onChange={()=>onEmploymentStatus('salaried')}/>
+                            <input
+                              type="radio"
+                              id="salaried"
+                              name="employmentState"
+                              value="salaried"
+                              onChange={() => onEmploymentStatus("salaried")}
+                            />
                             <label htmlFor="salaried"></label>
                           </div>
                           <span>Salaried</span>
                         </label>
-                        <label className={`custom-checkbox radiobtn ${employmentState === 'selfEmployed' && 'active'}`} htmlFor="selfEmployed">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            employmentState === "selfEmployed" && "active"
+                          }`}
+                          htmlFor="selfEmployed"
+                        >
                           <div>
-                            <input type="radio" id="selfEmployed" name="employmentState" value="selfEmployed" onChange={()=>onEmploymentStatus('selfEmployed')}/>
+                            <input
+                              type="radio"
+                              id="selfEmployed"
+                              name="employmentState"
+                              value="selfEmployed"
+                              onChange={() =>
+                                onEmploymentStatus("selfEmployed")
+                              }
+                            />
                             <label htmlFor="selfEmployed"></label>
                           </div>
                           <span>Self Employed</span>
@@ -503,7 +540,7 @@ function App() {
                       </div>
                     </div>
                     {/* Company */}
-                    <div className="form-input" style={{postion: 'relative'}}>
+                    <div className="form-input" style={{ postion: "relative" }}>
                       <label className="label">
                         Company<sup>*</sup>
                       </label>
@@ -520,7 +557,9 @@ function App() {
                       {errors.company ? (
                         <>
                           {errors.company.type === "required" && (
-                            <span className="error-msg">{errors.company.message}</span>
+                            <span className="error-msg">
+                              {errors.company.message}
+                            </span>
                           )}
                         </>
                       ) : null}
@@ -531,7 +570,9 @@ function App() {
                               return (
                                 <li
                                   key={item.Company_Name}
-                                  onClick={(e) => onListClick(item.Company_Name)}
+                                  onClick={(e) =>
+                                    onListClick(item.Company_Name)
+                                  }
                                 >
                                   {item.Company_Name}
                                 </li>
@@ -561,30 +602,74 @@ function App() {
                         Do you have any account with ICICI Bank?
                       </label>
                       <div className="checkbox-container">
-                        <label className={`custom-checkbox radiobtn ${accountStatus === 'noAccount' && 'active'}`} htmlFor="noAccount">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            accountStatus === "noAccount" && "active"
+                          }`}
+                          htmlFor="noAccount"
+                        >
                           <div>
-                            <input type="radio" id="noAccount" name="accountState" value="noAccount" onChange={()=>onAccountCheck('noAccount')}/>
+                            <input
+                              type="radio"
+                              id="noAccount"
+                              name="accountState"
+                              value="noAccount"
+                              onChange={() => onAccountCheck("noAccount")}
+                            />
                             <label htmlFor="noAccount"></label>
                           </div>
                           <span>No Account</span>
                         </label>
-                        <label className={`custom-checkbox radiobtn ${accountStatus === 'salaryAccount' && 'active'}`} htmlFor="salaryAccount">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            accountStatus === "salaryAccount" && "active"
+                          }`}
+                          htmlFor="salaryAccount"
+                        >
                           <div>
-                            <input type="radio" id="salaryAccount" name="accountState" value="salaryAccount" onChange={()=>onAccountCheck('salaryAccount')}/>
+                            <input
+                              type="radio"
+                              id="salaryAccount"
+                              name="accountState"
+                              value="salaryAccount"
+                              onChange={() => onAccountCheck("salaryAccount")}
+                            />
                             <label htmlFor="salaryAccount"></label>
                           </div>
                           <span>Salary Account</span>
                         </label>
-                        <label className={`custom-checkbox radiobtn ${accountStatus === 'scAccount' && 'active'}`} htmlFor="scAccount">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            accountStatus === "scAccount" && "active"
+                          }`}
+                          htmlFor="scAccount"
+                        >
                           <div>
-                            <input type="radio" id="scAccount" name="accountState" value="scAccount" onChange={()=>onAccountCheck('scAccount')}/>
+                            <input
+                              type="radio"
+                              id="scAccount"
+                              name="accountState"
+                              value="scAccount"
+                              onChange={() => onAccountCheck("scAccount")}
+                            />
                             <label htmlFor="scAccount"></label>
                           </div>
                           <span>Savings / Current Account</span>
                         </label>
-                        <label className={`custom-checkbox radiobtn ${accountStatus === 'loanAccount' && 'active'}`} htmlFor="loanAccount">
+                        <label
+                          className={`custom-checkbox radiobtn ${
+                            accountStatus === "loanAccount" && "active"
+                          }`}
+                          htmlFor="loanAccount"
+                        >
                           <div>
-                            <input type="radio" id="loanAccount" name="accountState" value="loanAccount" onChange={()=>onAccountCheck('loanAccount')}/>
+                            <input
+                              type="radio"
+                              id="loanAccount"
+                              name="accountState"
+                              value="loanAccount"
+                              onChange={() => onAccountCheck("loanAccount")}
+                            />
                             <label htmlFor="loanAccount"></label>
                           </div>
                           <span>Home / Car / Personal Loan or Credit Card</span>
@@ -617,13 +702,26 @@ function App() {
                           className="prefix-text"
                           disabled
                         />
-                        <input type="number" className="input-text" maxLength={10} onChange={(e)=> onMobileChange(e)} />
-                        <button type="button" className="btn" onClick={()=>sendOtp(mobile)}>
+                        <input
+                          type="number"
+                          className="input-text"
+                          maxLength={10}
+                          onChange={(e) => onMobileChange(e)}
+                        />
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={() => sendOtp(mobile)}
+                        >
                           Get OTP
                         </button>
                       </div>
                       <div className="form-input" style={{ marginTop: 20 }}>
-                        <input type='text' className="input-box" onChange={(e)=>verifyOtp(e)}/>
+                        <input
+                          type="text"
+                          className="input-box"
+                          onChange={(e) => verifyOtp(e)}
+                        />
                       </div>
                     </div>
                     <div className="form-input">
@@ -631,16 +729,37 @@ function App() {
                         Date of Birth<sup>*</sup>
                       </label>
                       <div className="input-with-select">
-                        <input type="text" ref={inputDayReference} className="input-day" maxength="2" value={day} onChange={(e)=> onDayChange(e)} />
-                        <input type="text" ref={inputMonthReference} className="input-select" maxLength="2" value={month} onChange={(e)=> onMonthChange(e)} />
+                        <input
+                          type="text"
+                          ref={inputDayReference}
+                          className="input-day"
+                          maxength="2"
+                          value={day}
+                          onChange={(e) => onDayChange(e)}
+                        />
+                        <input
+                          type="text"
+                          ref={inputMonthReference}
+                          className="input-select"
+                          maxLength="2"
+                          value={month}
+                          onChange={(e) => onMonthChange(e)}
+                        />
                         {/* <select className="input-select">
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
                         </select> */}
-                        <input type="text" ref={inputYearReference} className="input-year" maxLength="4" value={year}onChange={(e)=> onYearChange(e)} />
+                        <input
+                          type="text"
+                          ref={inputYearReference}
+                          className="input-year"
+                          maxLength="4"
+                          value={year}
+                          onChange={(e) => onYearChange(e)}
+                        />
                       </div>
-                      {isError && (<span className="error-msg">{error}</span>)}
+                      {isError && <span className="error-msg">{error}</span>}
                     </div>
                     <div className="terms-condition">
                       <input type="checkbox" />
