@@ -432,6 +432,7 @@ function App() {
                               <li
                                 key={item.Company_Name}
                                 onClick={(e) => onListClick(item.Company_Name)}
+                                style={{color: '#000'}}
                               >
                                 {item.Company_Name}
                               </li>
