@@ -201,14 +201,29 @@ function App() {
                   <div className="form-input">
                     <label className="label">Mobile No.<sup>*</sup></label>
                     <div className="input-with-btn">
-                      <input type="text" value={'+91'} className="prefix-text"/>
-                      <input type="text" className="input-text"/>
+                      <input type="text" value={'+91'} className="prefix-text" disabled/>
+                      <input type="text" className="input-text" />
                       <button type="button" className="btn">Get OTP</button>
+                    </div>
+                    <div className="form-input" style={{marginTop: 20}}>
+                      <input className="input-box" />
                     </div>
                   </div>
                   <div className="form-input">
                     <label className="label">Date of Birth<sup>*</sup></label>
-                    <input className="input-box" />
+                    <div className="input-with-select">
+                      <input type="text" className="input-day" />
+                      <select className="input-select">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                      </select>
+                      <input type="text" className="input-year" />
+                    </div>
+                  </div>
+                  <div className="terms-condition">
+                    <input type='checkbox' />
+                    <p>I agree to ICICI Bank’s <a href="" target="_blank">Terms & Conditions</a> and <a href="" target="">Most Important Terms & Conditions</a></p>
                   </div>
                 </div>
                 <div className="btn-grp space-between">
