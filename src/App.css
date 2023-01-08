@@ -131,7 +131,6 @@ h4 {
   color: #333333;
   z-index: 1;
   position: relative;
-
 }
 .form-input .input-select:focus {
   outline: none;
@@ -151,7 +150,7 @@ h4 {
   margin-bottom: 1.5rem;
   position: relative;
 }
-.pan-card{
+.pan-card {
   text-transform: uppercase;
 }
 .checkbox-container {
@@ -554,28 +553,28 @@ h4 {
   color: #000000;
   margin-left: 10px;
 }
-.top-header{
+.top-header {
   display: none;
 }
-.form{
+.form {
   width: 100%;
 }
-.error-msg{
+.error-msg {
   color: #a31b13;
   font-size: 1.4rem;
 }
 @media screen and (max-width: 767px) {
-  .container{
+  .container {
     padding: 0;
   }
-  .top-header{
+  .top-header {
     display: block;
     padding: 0 20px;
     text-align: center;
   }
   .header {
     margin: 2rem 1.5rem 3rem;
-}
+  }
   h2 {
     font-size: 2.5rem;
   }
@@ -614,7 +613,7 @@ h4 {
     margin: 40px 15px 40px 15px;
     height: auto;
   }
-  
+
   .top-section .content-side .anil-kapoor-image {
     position: absolute;
     right: -125px;
@@ -636,7 +635,8 @@ h4 {
     position: relative;
     margin-top: 4rem;
     padding-top: 4rem;
-    background: url('../src/assets/images/banner-mobile-bg.png') no-repeat center bottom;
+    background: url("../src/assets/images/banner-mobile-bg.png") no-repeat
+      center bottom;
     background-size: cover;
   }
   .art-security-section .title h2 {
@@ -655,14 +655,12 @@ h4 {
   .footer .box {
     display: block;
   }
-  .footer .box p{
+  .footer .box p {
     text-align: center;
-    color: #FFFFFF;
+    color: #ffffff;
     margin-bottom: 2rem;
   }
 }
-
-
 .radiobtn {
   position: relative;
   display: block;
@@ -670,14 +668,15 @@ h4 {
 .radiobtn label {
   display: block;
   cursor: pointer;
-  height: 45px;
-    width: 154px;
+  height: 35px;
+  width: 154px;
 }
-.radiobtn label:after, .radiobtn label:before {
+.radiobtn label:after,
+.radiobtn label:before {
   content: "";
   position: absolute;
   left: 65px;
-    top: 25px;
+  top: 15px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -694,44 +693,43 @@ h4 {
   height: 0;
   /* background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+); */
 }
-.radiobtn input[type=radio] {
+.radiobtn input[type="radio"] {
   display: none;
   position: absolute;
   width: 100%;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-.radiobtn input[type=radio]:checked + label:after {
-  
+.radiobtn input[type="radio"]:checked + label:after {
 }
-.radiobtn input[type=radio]:checked + label:before {
+.radiobtn input[type="radio"]:checked + label:before {
   width: 20px;
   height: 20px;
   border: 1px solid #f37e20;
-  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+) #f37e20;
-  
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+)
+    #f37e20;
 }
 
-.company-selection-container{
+.company-selection-container {
   height: 120px;
   overflow: hidden;
   overflow-y: scroll;
   margin-top: -0.5rem;
   padding-top: 1.5rem;
   position: absolute;
-  top:100%;
+  top: 100%;
   background: #fff;
   width: 100%;
 }
-.company-selection li{
+.company-selection li {
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
   color: #000000;
 }
-.company-selection{
+.company-selection {
   width: 100%;
   background: #fff;
   height: auto;

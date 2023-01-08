@@ -22,7 +22,7 @@ import tickIcon from "../src/assets/images/tick-icon.svg";
 import "./App.css";
 
 function App() {
-  const [pageNumber, setPageNumber] = React.useState(2);
+  const [pageNumber, setPageNumber] = React.useState(4);
   const [pageOne, setPageOne] = React.useState("active");
   const [pageTwo, setPageTwo] = React.useState("");
   const [pageThree, setPageThree] = React.useState("");
@@ -35,6 +35,7 @@ function App() {
   const [salaryRange, setSalaryRange] = React.useState(0);
   const [pan, setPan] = React.useState('');
   const [employmentState, setEmploymentState] = React.useState('');
+  const [accountStatus, setAccountStatus] = React.useState('');
   let cancelToken;
 
   React.useEffect(() => {
@@ -106,8 +107,12 @@ function App() {
     setPan(e.target.value.toUpperCase());
   };
 
-  const onEmploymentStatus = (e) =>{
-    setEmploymentState(e);
+  const onEmploymentStatus = (val) =>{
+    setEmploymentState(val);
+  }
+
+  const onAccountCheck = (val) =>{
+    setAccountStatus(val);
   }
   const onCompanyChange = async (e) => {
     const searchText = e.target.value;
@@ -474,22 +479,34 @@ function App() {
                         Do you have any account with ICICI Bank?
                       </label>
                       <div className="checkbox-container">
-                        <div className="custom-checkbox">
-                          <div className="circle"></div>
+                        <label className={`custom-checkbox radiobtn ${accountStatus === 'noAccount' && 'active'}`} htmlFor="noAccount">
+                          <div>
+                            <input type="radio" id="noAccount" name="accountState" value="noAccount" onChange={()=>onAccountCheck('noAccount')}/>
+                            <label htmlFor="noAccount"></label>
+                          </div>
                           <span>No Account</span>
-                        </div>
-                        <div className="custom-checkbox active">
-                          <div className="circle"></div>
+                        </label>
+                        <label className={`custom-checkbox radiobtn ${accountStatus === 'salaryAccount' && 'active'}`} htmlFor="salaryAccount">
+                          <div>
+                            <input type="radio" id="salaryAccount" name="accountState" value="salaryAccount" onChange={()=>onAccountCheck('salaryAccount')}/>
+                            <label htmlFor="salaryAccount"></label>
+                          </div>
                           <span>Salary Account</span>
-                        </div>
-                        <div className="custom-checkbox">
-                          <div className="circle"></div>
+                        </label>
+                        <label className={`custom-checkbox radiobtn ${accountStatus === 'scAccount' && 'active'}`} htmlFor="scAccount">
+                          <div>
+                            <input type="radio" id="scAccount" name="accountState" value="scAccount" onChange={()=>onAccountCheck('scAccount')}/>
+                            <label htmlFor="scAccount"></label>
+                          </div>
                           <span>Savings / Current Account</span>
-                        </div>
-                        <div className="custom-checkbox active">
-                          <div className="circle"></div>
+                        </label>
+                        <label className={`custom-checkbox radiobtn ${accountStatus === 'loanAccount' && 'active'}`} htmlFor="loanAccount">
+                          <div>
+                            <input type="radio" id="loanAccount" name="accountState" value="loanAccount" onChange={()=>onAccountCheck('loanAccount')}/>
+                            <label htmlFor="loanAccount"></label>
+                          </div>
                           <span>Home / Car / Personal Loan or Credit Card</span>
-                        </div>
+                        </label>
                       </div>
                     </div>
                   </div>
