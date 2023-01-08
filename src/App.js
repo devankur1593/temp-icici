@@ -3,6 +3,8 @@ import * as React from "react";
 // Using an ES6 transpiler like Babel
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 
 import iciciBankLogo from "../src/assets/images/icici-bank-logo.svg";
 import refuel from "../src/assets/images/refuel.png";
@@ -20,7 +22,12 @@ import tickIcon from "../src/assets/images/tick-icon.svg";
 import "./App.css";
 
 function App() {
+  const [name, setName] = React.useState("");
+  const [otherCity, setOtherCity] = React.useState(false);
+  const [companies, setCompanies] = React.useState([]);
+  const [company, setCompany] = React.useState("");
   const [salaryRange, setSalaryRange] = React.useState();
+  let cancelToken;
 
   const handleChangeHorizontal = (value) => {
     console.log("value: ", value);
@@ -33,6 +40,68 @@ function App() {
   };
 
   const getSalary = (value) => value;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm();
+
+  const onSubmit = (d) => {
+    console.log("====DATA===");
+    console.log(d);
+  };
+
+  const onNameChange = (e) => {
+    const re = /^[a-zA-Z\s]+$/;
+    if (e.target.value === "" || re.test(e.target.value)) {
+      setName(e.target.value);
+    }
+  };
+
+  const onCityChange = (e) => {
+    const selectedCity = e.target.value;
+    setOtherCity(selectedCity === "Other City");
+    if (otherCity) {
+      clearErrors("otherCity");
+    }
+  };
+
+  const onCompanyChange = async (e) => {
+    const searchText = e.target.value;
+    setCompany(searchText);
+    const baseURL =
+      "https://lapps-in21.leadsquared.com/executebylapptoken?name=da_46725_b19b105f&stage=Live&xapikey=10bd548a582140acbbebeb711cd8ea32&type=company";
+    if (searchText.length >= 3) {
+      if (typeof cancelToken !== typeof undefined) {
+        cancelToken.cancel("Cancelled due to new request");
+      }
+      cancelToken = axios.CancelToken.source();
+      try {
+        const serachResults = await axios.post(
+          baseURL,
+          {
+            company: searchText,
+          },
+          { cancelToken: cancelToken.token }
+        );
+        const { Data, Count } = serachResults.data.message;
+        if (Count) {
+          setCompanies(Data);
+        }
+      } catch (error) {
+        // console.log(error);
+      }
+    } else if (searchText.length < 3) {
+      setCompanies([]);
+    }
+  };
+
+  const onListClick = (e) => {
+    setCompany(e);
+  };
+
   return (
     <>
       {/* Header */}
@@ -45,7 +114,9 @@ function App() {
       <main>
         <section className="top-section">
           <div className="container">
-            <h4 className="top-header">Apply for a ICICI Bank Platinum Credit Card</h4>
+            <h4 className="top-header">
+              Apply for a ICICI Bank Platinum Credit Card
+            </h4>
             <div className="form-side">
               <div className="stepper">
                 <ul>
@@ -57,47 +128,158 @@ function App() {
                   <li></li>
                 </ul>
               </div>
-              <div
-                className="steps-div"
-                id="step-one"
-                style={{ display: "none" }}
-              >
-                <div className="form-box">
-                  <h3>How do we get in touch?</h3>
-                  <div className="form-input">
-                    <label className="label">
-                      Full Name<sup>*</sup>
-                    </label>
-                    <input className="input-box" />
+              <div className="steps-div" id="step-one">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  noValidate
+                  className="form"
+                >
+                  <div className="form-box">
+                    <h3>How do we get in touch?</h3>
+
+                    <div className="form-input">
+                      <label className="label">
+                        Full Name<sup>*</sup>
+                      </label>
+                      <input
+                        className="input-box"
+                        type="text"
+                        value={name}
+                        name="name"
+                        {...register("name", {
+                          required: "This is required field.",
+                          minLength: {
+                            value: 3,
+                            message: "Please enter at least 3 characters.",
+                          },
+                          onChange: (e) => onNameChange(e),
+                        })}
+                      />
+                      {errors.name ? (
+                        <>
+                          {errors.name.type === "required" && (
+                            <span className="error-msg">{errors.name.message}</span>
+                          )}
+                          {errors.name.type === "minLength" && (
+                            <span className="error-msg">{errors.name.message}</span>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    {/* Email */}
+                    <div className="form-input">
+                      <label className="label">
+                        Email Address<sup>*</sup>
+                      </label>
+                      <input
+                        className="input-box"
+                        type="email"
+                        name="email"
+                        {...register("email", {
+                          required: "This field is required.",
+                          pattern: {
+                            value:
+                              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                            message: "Please enter a valid email address.",
+                          },
+                        })}
+                      />
+                      {errors.email ? (
+                        <>
+                          {errors.email.type === "required" && (
+                            <span className="error-msg">{errors.email.message}</span>
+                          )}
+                          {errors.email.type === "pattern" && (
+                            <span className="error-msg">{errors.email.message}</span>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    <div className="form-input">
+                      <label className="label">
+                        City<sup>*</sup>
+                      </label>
+                      <select
+                        className="input-select"
+                        name="city"
+                        {...register("city", {
+                          required: "This field is required.",
+                          onChange: (e) => onCityChange(e),
+                        })}
+                      >
+                        <option value="">Select city...</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Other City">Other City</option>
+                      </select>
+                      {errors.city ? (
+                        <>
+                          {errors.city.type === "required" && (
+                            <span className="error-msg">{errors.city.message}</span>
+                          )}
+                        </>
+                      ) : null}
+                      {otherCity ? (
+                        <input
+                          className="input-box"
+                          type="text"
+                          name="otherCity"
+                          style={{marginTop: 20}}
+                          {...register("otherCity", {
+                            required: "This is required field.",
+                          })}
+                        />
+                      ) : null}
+                      {errors.otherCity ? (
+                        <>
+                          {errors.otherCity.type === "required" && (
+                            <span className="error-msg">{errors.otherCity.message}</span>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                    {/* Pan */}
+                    <div className="form-input">
+                      <label className="label">
+                        Pan Card Number<sup>*</sup>
+                      </label>
+                      <input
+                        className="input-box pan-card"
+                        type="text"
+                        name="pan"
+                        maxLength={10}
+                        {...register("pan", {
+                          required: "This field is required.",
+                          pattern: {
+                            value: /^[A-Z]{5}\d{4}[A-Z]{1}$/i,
+                            message: "Invalid pan number.",
+                          },
+                        })}
+                      />
+                      {errors.pan ? (
+                        <>
+                          {errors.pan.type === "required" && (
+                            <span className="error-msg">{errors.pan.message}</span>
+                          )}
+                          {errors.pan.type === "pattern" && (
+                            <span className="error-msg">{errors.pan.message}</span>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="form-input">
-                    <label className="label">
-                      Email Address<sup>*</sup>
-                    </label>
-                    <input className="input-box" />
+                  <div className="btn-box">
+                    <button className="btn-primary" type="sumbit">
+                      Apply Now
+                    </button>
                   </div>
-                  <div className="form-input">
-                    <label className="label">
-                      City<sup>*</sup>
-                    </label>
-                    <select className="input-select">
-                      <option value="one">One</option>
-                      <option value="two">two</option>
-                      <option value="three">three</option>
-                    </select>
-                  </div>
-                  <div className="form-input">
-                    <label className="label">
-                      Pan Card Number<sup>*</sup>
-                    </label>
-                    <input className="input-box" />
-                  </div>
-                </div>
-                <div className="btn-box">
-                  <button className="btn-primary" type="button">
-                    Apply Now
-                  </button>
-                </div>
+                </form>
               </div>
               <div
                 className="steps-div"
@@ -139,9 +321,42 @@ function App() {
                       </div>
                     </div>
                   </div>
+                  {/* Company */}
                   <div className="form-input">
-                    <label className="label">Company<sup>*</sup></label>
-                    <input className="input-box" />
+                    <label className="label">
+                      Company<sup>*</sup>
+                    </label>
+                    <input
+                      className="input-box"
+                      type="text"
+                      name="company"
+                      value={company}
+                      {...register("company", {
+                        required: "This field is required.",
+                        onChange: (e) => onCompanyChange(e),
+                      })}
+                    />
+                    {errors.company ? (
+                      <>
+                        {errors.company.type === "required" && (
+                          <p>{errors.company.message}</p>
+                        )}
+                      </>
+                    ) : null}
+                    {companies.length ? (
+                      <ul>
+                        {companies.map((item) => {
+                          return (
+                            <li
+                              key={item.Company_Name}
+                              onClick={(e) => onListClick(item.Company_Name)}
+                            >
+                              {item.Company_Name}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : null}
                   </div>
                 </div>
                 <div className="btn-grp space-between">
@@ -196,22 +411,34 @@ function App() {
               <div
                 className="steps-div"
                 id="step-four"
+                style={{ display: "none" }}
               >
                 <div className="form-box">
                   <h3>Almost done!</h3>
                   <div className="form-input">
-                    <label className="label">Mobile No.<sup>*</sup></label>
+                    <label className="label">
+                      Mobile No.<sup>*</sup>
+                    </label>
                     <div className="input-with-btn">
-                      <input type="text" value={'+91'} className="prefix-text" disabled/>
+                      <input
+                        type="text"
+                        value={"+91"}
+                        className="prefix-text"
+                        disabled
+                      />
                       <input type="text" className="input-text" />
-                      <button type="button" className="btn">Get OTP</button>
+                      <button type="button" className="btn">
+                        Get OTP
+                      </button>
                     </div>
-                    <div className="form-input" style={{marginTop: 20}}>
+                    <div className="form-input" style={{ marginTop: 20 }}>
                       <input className="input-box" />
                     </div>
                   </div>
                   <div className="form-input">
-                    <label className="label">Date of Birth<sup>*</sup></label>
+                    <label className="label">
+                      Date of Birth<sup>*</sup>
+                    </label>
                     <div className="input-with-select">
                       <input type="text" className="input-day" />
                       <select className="input-select">
@@ -223,8 +450,17 @@ function App() {
                     </div>
                   </div>
                   <div className="terms-condition">
-                    <input type='checkbox' />
-                    <p>I agree to ICICI Bank’s <a href="" target="_blank">Terms & Conditions</a> and <a href="" target="">Most Important Terms & Conditions</a></p>
+                    <input type="checkbox" />
+                    <p>
+                      I agree to ICICI Bank’s{" "}
+                      <a href="" target="_blank">
+                        Terms & Conditions
+                      </a>{" "}
+                      and{" "}
+                      <a href="" target="">
+                        Most Important Terms & Conditions
+                      </a>
+                    </p>
                   </div>
                 </div>
                 <div className="btn-grp space-between">
@@ -250,7 +486,11 @@ function App() {
                   <p>It will receive your house through mail</p>
                 </div>
               </div>
-              <div className="steps-div" id="step-failed" style={{ display: "none" }}>
+              <div
+                className="steps-div"
+                id="step-failed"
+                style={{ display: "none" }}
+              >
                 <div className="result-box">
                   <img src={failedIcon} alt="success" />
                   <h4>

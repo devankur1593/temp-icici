@@ -63,6 +63,7 @@ h4 {
   max-width: 1199px;
   margin: 0 auto;
   position: relative;
+  padding: 0 15px;
 }
 .header {
   margin: 3rem 0;
@@ -75,7 +76,7 @@ h4 {
   border: 0;
   border-radius: 5px;
   width: 50%;
-  margin: 2rem auto 0;
+  margin: 4rem auto 0;
   display: block;
 }
 .btn-outline {
@@ -146,6 +147,9 @@ h4 {
 .form-input {
   margin-bottom: 1.5rem;
 }
+.pan-card{
+  text-transform: uppercase;
+}
 .checkbox-container {
   display: flex;
   justify-content: space-between;
@@ -205,7 +209,8 @@ h4 {
 }
 .top-section .form-side {
   width: 36.4rem;
-  height: 60rem;
+  min-height: 60rem;
+  height: auto;
   background: #fff;
   padding: 30px 20px;
   position: absolute;
@@ -227,7 +232,8 @@ h4 {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 50rem;
+  min-height: 50rem;
+  height: auto;
 }
 .top-section .form-side .stepper ul {
   display: flex;
@@ -385,7 +391,7 @@ h4 {
   padding: 2.5rem 0;
 }
 .footer .box p {
-  color: #949494;
+  color: #fff;
   font-size: 1.2rem;
   line-height: 2rem;
   font-weight: 700;
@@ -546,7 +552,17 @@ h4 {
 .top-header{
   display: none;
 }
+.form{
+  width: 100%;
+}
+.error-msg{
+  color: #a31b13;
+  font-size: 1.4rem;
+}
 @media screen and (max-width: 767px) {
+  .container{
+    padding: 0;
+  }
   .top-header{
     display: block;
     padding: 0 20px;
@@ -593,6 +609,7 @@ h4 {
     margin: 40px 15px 40px 15px;
     height: auto;
   }
+  
   .top-section .content-side .anil-kapoor-image {
     position: absolute;
     right: -125px;
