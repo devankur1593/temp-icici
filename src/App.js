@@ -45,6 +45,7 @@ function App() {
       <main>
         <section className="top-section">
           <div className="container">
+            <h4 className="top-header">Apply for a ICICI Bank Platinum Credit Card</h4>
             <div className="form-side">
               <div className="stepper">
                 <ul>
@@ -249,7 +250,7 @@ function App() {
                   <p>It will receive your house through mail</p>
                 </div>
               </div>
-              <div className="steps-div" id="step-failed">
+              <div className="steps-div" id="step-failed" style={{ display: "none" }}>
                 <div className="result-box">
                   <img src={failedIcon} alt="success" />
                   <h4>

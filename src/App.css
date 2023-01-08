@@ -543,3 +543,99 @@ h4 {
   color: #000000;
   margin-left: 10px;
 }
+.top-header{
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .top-header{
+    display: block;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .header {
+    margin: 2rem 1.5rem 3rem;
+}
+  h2 {
+    font-size: 2.5rem;
+  }
+  h4 {
+    font-size: 2rem;
+  }
+  .benefits-container .benefits-box p {
+    font-weight: 400;
+  }
+  .benefits-section {
+    padding: 10.8rem 15px 0;
+    width: auto;
+  }
+  .benefits-container,
+  .art-security-section,
+  .top-section .content-side,
+  .benefits-section .title p {
+    width: 100%;
+  }
+  .art-security-section {
+    padding: 20px;
+    margin: 0 20px 5rem;
+    width: auto;
+    border-radius: 10px;
+  }
+  .top-section {
+    background-image: none;
+    height: auto;
+    overflow: hidden;
+  }
+  .top-section .form-side {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: auto;
+    margin: 40px 15px 40px 15px;
+    height: auto;
+  }
+  .top-section .content-side .anil-kapoor-image {
+    position: absolute;
+    right: -125px;
+    bottom: 0px;
+  }
+  .top-section .content-side h2 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    padding: 0 15px;
+  }
+  .top-section .content-side h3 {
+    font-size: 2rem;
+    height: 48px;
+    width: 200px;
+    background-size: cover;
+    margin-left: 15px;
+  }
+  .top-section .content-side {
+    position: relative;
+    margin-top: 4rem;
+    padding-top: 4rem;
+    background: url('../src/assets/images/banner-mobile-bg.png') no-repeat center bottom;
+    background-size: cover;
+  }
+  .art-security-section .title h2 {
+    font-size: 2.5rem;
+  }
+  .art-security-section .art-security img {
+    margin: 2.5rem 0;
+  }
+  .art-security-section .art-security p {
+    font-weight: 400;
+    line-height: 2.5rem;
+  }
+  .footer {
+    padding: 3rem 4rem 1rem;
+  }
+  .footer .box {
+    display: block;
+  }
+  .footer .box p{
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 2rem;
+  }
+}
