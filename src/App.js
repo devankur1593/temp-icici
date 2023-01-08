@@ -1,9 +1,8 @@
 import * as React from "react";
 
 // Using an ES6 transpiler like Babel
-import Slider from 'react-rangeslider'
-import 'react-rangeslider/lib/index.css'
-
+import Slider from "react-rangeslider";
+import "react-rangeslider/lib/index.css";
 
 import iciciBankLogo from "../src/assets/images/icici-bank-logo.svg";
 import refuel from "../src/assets/images/refuel.png";
@@ -14,23 +13,26 @@ import reward from "../src/assets/images/reward.png";
 import creditCard from "../src/assets/images/credit-card.png";
 import anilKapoor from "../src/assets/images/anil-kapoor.png";
 
+import successIcon from "../src/assets/images/success.svg";
+import failedIcon from "../src/assets/images/failed.svg";
+import tickIcon from "../src/assets/images/tick-icon.svg";
 
 import "./App.css";
 
 function App() {
   const [salaryRange, setSalaryRange] = React.useState();
 
-  const handleChangeHorizontal = value => {
-    console.log('value: ', value)
-    setSalaryRange(value)
+  const handleChangeHorizontal = (value) => {
+    console.log("value: ", value);
+    setSalaryRange(value);
   };
 
   const horizontalLabels = {
-    0: '0',
-    300000: '300000'
-  }
+    0: "0",
+    300000: "300000",
+  };
 
-  const getSalary = value => value;
+  const getSalary = (value) => value;
   return (
     <>
       {/* Header */}
@@ -47,14 +49,20 @@ function App() {
               <div className="stepper">
                 <ul>
                   <li className="active"></li>
-                  <li></li>
+                  <li className="completed">
+                    <img src={tickIcon} alt=""/>
+                  </li>
                   <li></li>
                   <li></li>
                 </ul>
               </div>
-              <div id="step-one" style={{ display: "none" }}>
-                <h3>How do we get in touch?</h3>
-                <div>
+              <div
+                className="steps-div"
+                id="step-one"
+                style={{ display: "none" }}
+              >
+                <div className="form-box">
+                  <h3>How do we get in touch?</h3>
                   <div className="form-input">
                     <label className="label">
                       Full Name<sup>*</sup>
@@ -83,15 +91,19 @@ function App() {
                     </label>
                     <input className="input-box" />
                   </div>
-                  <div>
-                    <button className="btn-primary" type="button">
-                      Apply Now
-                    </button>
-                  </div>
+                </div>
+                <div className="btn-box">
+                  <button className="btn-primary" type="button">
+                    Apply Now
+                  </button>
                 </div>
               </div>
-              <div id="step-two">
-                <div>
+              <div
+                className="steps-div"
+                id="step-two"
+                style={{ display: "none" }}
+              >
+                <div className="form-box">
                   <div className="form-input">
                     <label className="label">
                       What is your type of employment?
@@ -108,10 +120,8 @@ function App() {
                     </div>
                   </div>
                   <div className="form-input">
-                    <label className="label">
-                    Salary (Per Month)
-                    </label>
-                    <input className="input-box" value={salaryRange}/>
+                    <label className="label">Salary (Per Month)</label>
+                    <input className="input-box" value={salaryRange} />
                     <div>
                       <Slider
                         min={0}
@@ -129,19 +139,81 @@ function App() {
                     </div>
                   </div>
                   <div className="form-input">
-                    <label className="label">
-                    Company*
-                    </label>
+                    <label className="label">Company*</label>
                     <input className="input-box" />
                   </div>
-                  <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button">
-                      Back
-                    </button>
-                    <button className="btn-primary" type="button">
-                      Next
-                    </button>
+                </div>
+                <div className="btn-grp space-between">
+                  <button className="btn-outline" type="button">
+                    Back
+                  </button>
+                  <button className="btn-primary" type="button">
+                    Next
+                  </button>
+                </div>
+              </div>
+              <div
+                className="steps-div"
+                id="step-three"
+                style={{ display: "none" }}
+              >
+                <div className="form-box">
+                  <h3>Almost there!</h3>
+                  <div className="form-input">
+                    <label className="label">
+                      Do you have any account with ICICI Bank?
+                    </label>
+                    <div className="checkbox-container">
+                      <div className="custom-checkbox">
+                        <div className="circle"></div>
+                        <span>No Account</span>
+                      </div>
+                      <div className="custom-checkbox active">
+                        <div className="circle"></div>
+                        <span>Salary Account</span>
+                      </div>
+                      <div className="custom-checkbox">
+                        <div className="circle"></div>
+                        <span>Savings / Current Account</span>
+                      </div>
+                      <div className="custom-checkbox active">
+                        <div className="circle"></div>
+                        <span>Home / Car / Personal Loan or Credit Card</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                <div className="btn-grp space-between">
+                  <button className="btn-outline" type="button">
+                    Back
+                  </button>
+                  <button className="btn-primary" type="button">
+                    Next
+                  </button>
+                </div>
+              </div>
+              <div
+                className="steps-div"
+                id="step-success"
+                style={{ display: "none" }}
+              >
+                <div className="result-box">
+                  <img src={successIcon} alt="success" />
+                  <h4>
+                    Success! You have successfully applied for an ICICI Bank
+                    Credit Card
+                  </h4>
+                  <p>It will receive your house through mail</p>
+                </div>
+              </div>
+              <div className="steps-div" id="step-failed">
+                <div className="result-box">
+                  <img src={failedIcon} alt="success" />
+                  <h4>
+                    Success! You have successfully applied for an ICICI Bank
+                    Credit Card
+                  </h4>
+                  <p>It will receive your house through mail</p>
                 </div>
               </div>
             </div>
