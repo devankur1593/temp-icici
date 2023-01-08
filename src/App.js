@@ -22,7 +22,7 @@ import tickIcon from "../src/assets/images/tick-icon.svg";
 import "./App.css";
 
 function App() {
-  const [pageNumber, setPageNumber] = React.useState(1);
+  const [pageNumber, setPageNumber] = React.useState(2);
   const [pageOne, setPageOne] = React.useState("active");
   const [pageTwo, setPageTwo] = React.useState("");
   const [pageThree, setPageThree] = React.useState("");
@@ -34,10 +34,10 @@ function App() {
   const [company, setCompany] = React.useState("");
   const [salaryRange, setSalaryRange] = React.useState(0);
   const [pan, setPan] = React.useState('');
+  const [employmentState, setEmploymentState] = React.useState('');
   let cancelToken;
 
   React.useEffect(() => {
-    console.log(pageNumber);
     if (pageNumber === 1) {
       setPageOne("active");
     }
@@ -56,9 +56,11 @@ function App() {
       setPageThree("complete");
       setPageFour("active");
     }
-    if (pageNumber === 4) {
+    if (pageNumber === 5) {
       setPageOne("complete");
-      setPageTwo("active");
+      setPageTwo("complete");
+      setPageThree("complete");
+      setPageFour("complete");
     }
   }, [pageNumber]);
 
@@ -104,6 +106,9 @@ function App() {
     setPan(e.target.value.toUpperCase());
   };
 
+  const onEmploymentStatus = (e) =>{
+    setEmploymentState(e);
+  }
   const onCompanyChange = async (e) => {
     const searchText = e.target.value;
     setCompany(searchText);
@@ -136,6 +141,7 @@ function App() {
 
   const onListClick = (e) => {
     setCompany(e);
+    setCompanies([]);
   };
 
   return (
@@ -365,14 +371,20 @@ function App() {
                         What is your type of employment?
                       </label>
                       <div className="checkbox-container">
-                        <div className="custom-checkbox">
-                          <div className="circle"></div>
+                        <label className={`custom-checkbox radiobtn ${employmentState === 'salaried' && 'active'}`} htmlFor="salaried">
+                          <div>
+                            <input type="radio" id="salaried" name="employmentState" value="salaried" onChange={()=>onEmploymentStatus('salaried')}/>
+                            <label htmlFor="salaried"></label>
+                          </div>
                           <span>Salaried</span>
-                        </div>
-                        <div className="custom-checkbox active">
-                          <div className="circle"></div>
+                        </label>
+                        <label className={`custom-checkbox radiobtn ${employmentState === 'selfEmployed' && 'active'}`} htmlFor="selfEmployed">
+                          <div>
+                            <input type="radio" id="selfEmployed" name="employmentState" value="selfEmployed" onChange={()=>onEmploymentStatus('selfEmployed')}/>
+                            <label htmlFor="selfEmployed"></label>
+                          </div>
                           <span>Self Employed</span>
-                        </div>
+                        </label>
                       </div>
                     </div>
                     <div className="form-input">
@@ -404,7 +416,7 @@ function App() {
                       </div>
                     </div>
                     {/* Company */}
-                    <div className="form-input">
+                    <div className="form-input" style={{postion: 'relative'}}>
                       <label className="label">
                         Company<sup>*</sup>
                       </label>
@@ -426,19 +438,20 @@ function App() {
                         </>
                       ) : null}
                       {companies.length ? (
-                        <ul>
-                          {companies.map((item) => {
-                            return (
-                              <li
-                                key={item.Company_Name}
-                                onClick={(e) => onListClick(item.Company_Name)}
-                                style={{color: '#000'}}
-                              >
-                                {item.Company_Name}
-                              </li>
-                            );
-                          })}
-                        </ul>
+                        <div className="company-selection-container">
+                          <ul className="company-selection">
+                            {companies.map((item) => {
+                              return (
+                                <li
+                                  key={item.Company_Name}
+                                  onClick={(e) => onListClick(item.Company_Name)}
+                                >
+                                  {item.Company_Name}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
                       ) : null}
                     </div>
                   </div>
