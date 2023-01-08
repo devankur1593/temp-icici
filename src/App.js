@@ -50,7 +50,7 @@ function App() {
                 <ul>
                   <li className="active"></li>
                   <li className="completed">
-                    <img src={tickIcon} alt=""/>
+                    <img src={tickIcon} alt="" />
                   </li>
                   <li></li>
                   <li></li>
@@ -139,7 +139,7 @@ function App() {
                     </div>
                   </div>
                   <div className="form-input">
-                    <label className="label">Company*</label>
+                    <label className="label">Company<sup>*</sup></label>
                     <input className="input-box" />
                   </div>
                 </div>
@@ -181,6 +181,34 @@ function App() {
                         <span>Home / Car / Personal Loan or Credit Card</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div className="btn-grp space-between">
+                  <button className="btn-outline" type="button">
+                    Back
+                  </button>
+                  <button className="btn-primary" type="button">
+                    Next
+                  </button>
+                </div>
+              </div>
+              <div
+                className="steps-div"
+                id="step-four"
+              >
+                <div className="form-box">
+                  <h3>Almost done!</h3>
+                  <div className="form-input">
+                    <label className="label">Mobile No.<sup>*</sup></label>
+                    <div className="input-with-btn">
+                      <input type="text" value={'+91'} className="prefix-text"/>
+                      <input type="text" className="input-text"/>
+                      <button type="button" className="btn">Get OTP</button>
+                    </div>
+                  </div>
+                  <div className="form-input">
+                    <label className="label">Date of Birth<sup>*</sup></label>
+                    <input className="input-box" />
                   </div>
                 </div>
                 <div className="btn-grp space-between">
