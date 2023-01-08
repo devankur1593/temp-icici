@@ -421,7 +421,7 @@ function App() {
                       {errors.company ? (
                         <>
                           {errors.company.type === "required" && (
-                            <p>{errors.company.message}</p>
+                            <span className="error-msg">{errors.company.message}</span>
                           )}
                         </>
                       ) : null}
