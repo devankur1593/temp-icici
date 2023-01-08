@@ -23,7 +23,7 @@ import "./App.css";
 import { onSendOtp, onVerifyOtp } from "./service/apiService";
 
 function App() {
-  const [pageNumber, setPageNumber] = React.useState(4);
+  const [pageNumber, setPageNumber] = React.useState(1);
   const [pageOne, setPageOne] = React.useState("active");
   const [pageTwo, setPageTwo] = React.useState("");
   const [pageThree, setPageThree] = React.useState("");
@@ -35,14 +35,20 @@ function App() {
   const [company, setCompany] = React.useState("");
   const [salaryRange, setSalaryRange] = React.useState(0);
   const [pan, setPan] = React.useState("");
-  const [employmentState, setEmploymentState] = React.useState("");
-  const [accountStatus, setAccountStatus] = React.useState("");
+  const [employmentState, setEmploymentState] = React.useState("salaried");
+  const [accountStatus, setAccountStatus] = React.useState("noAccount");
   const [day, setDay] = React.useState("");
   const [month, setMonth] = React.useState("");
   const [year, setYear] = React.useState("");
   const [error, setError] = React.useState("");
   const [isError, setIsError] = React.useState("");
-  const [mobile, setMobile] = React.useState();
+  const [mobile, setMobile] = React.useState('');
+
+  const inputDayReference = React.useRef(null);
+  const inputMonthReference = React.useRef(null);
+  const inputYearReference = React.useRef(null);
+  const inputOtpReference = React.useRef(null);
+
   let cancelToken;
 
   React.useEffect(() => {
@@ -69,6 +75,7 @@ function App() {
       setPageTwo("complete");
       setPageThree("complete");
       setPageFour("complete");
+      setPageStatus('success')
     }
   }, [pageNumber]);
 
@@ -77,8 +84,8 @@ function App() {
   };
 
   const horizontalLabels = {
-    0: "0",
-    300000: "300000",
+    0: "Low",
+    300000: "High",
   };
 
   const getSalary = (value) => value;
@@ -107,10 +114,6 @@ function App() {
     if (otherCity) {
       clearErrors("otherCity");
     }
-  };
-
-  const onPanChange = (e) => {
-    setPan(e.target.value.toUpperCase());
   };
 
   const onEmploymentStatus = (val) => {
@@ -149,13 +152,9 @@ function App() {
   };
 
   const onListClick = (e) => {
-    setCompany(e);
     setCompanies([]);
+    setCompany(()=>e);
   };
-
-  const inputDayReference = React.useRef(null);
-  const inputMonthReference = React.useRef(null);
-  const inputYearReference = React.useRef(null);
 
   const onDayChange = (e) => {
     setIsError(false);
@@ -175,6 +174,7 @@ function App() {
       inputMonthReference.current.focus();
     }
   };
+
   const onMonthChange = (e) => {
     setIsError(false);
     setError("");
@@ -188,6 +188,7 @@ function App() {
       inputYearReference.current.focus();
     }
   };
+
   const onYearChange = (e) => {
     const currentYear = new Date().getFullYear();
     setIsError(false);
@@ -200,50 +201,91 @@ function App() {
 
     setYear(e.target.value);
   };
-  const onMobileChange = (e) => {
-    setMobile(e.target.value);
-  };
+  
   const sendOtp = async (mobile) => {
     if (!mobile) {
       return;
     }
     if (mobile.length === 10) {
       try {
-        const otpRes = await onSendOtp(mobile);
+        const res = await onSendOtp(mobile);
+        if(res.data.message.response.sent){
+          alert('An OTP has been sent to your Mobile number.');
+        }
       } catch (error) {
-        alert(error.data.message);
+        alert("Error occured while generating OTP.");
       }
     }
   };
+
   const verifyOtp = async (e) => {
+
     if (!mobile) {
+      alert('please enter mobile number')
       return;
     }
     if (!e.target.value) {
+      e.preventDefault();
       return;
     }
-    if (e.target.value.length > 4) {
+    if (e.target.value.length > 5) {
       try {
-        const otpRes = await onVerifyOtp(mobile, e.target.value);
+        const res = await onVerifyOtp(mobile, e.target.value);
+        if (res.data.message === "Failure Occured, please check logs") {
+          alert("Please enter valid OTP");
+          inputOtpReference.current.focus();
+          return false;
+        } 
+
       } catch (error) {
         alert(error.data.message);
       }
     }
   };
+
   const onStepTwo = (d) => {
-    console.log("=======STEP 2 SUBMIT==");
-    console.log(d);
+    setPageNumber(3);
   };
 
   const onStepThree = (d) => {
-    console.log("=STEP 3=");
-    console.log(d);
+    setPageNumber(4);
   };
 
   const onStepFour = (d) => {
-    console.log("onStepFour called");
-    console.log(d);
+    if(!day || !month || !year){
+      setIsError(true);
+      setError("This field cannot be left empty.");
+    }
+    console.log(d)
+    setPageNumber(5);
   };
+
+  const onMobileChange = e => {
+    if (e.target.value.length === 10) {
+      setMobile(e.target.value.slice(0, 10));
+    } else if (e.target.value.length < 10) {
+      setMobile(e.target.value);
+    }
+  };
+
+  const onMobileKeyHandler = event => {
+    if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,10}$/)) {
+      // block the input if result does not match
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  };
+  const onOtpKeyHandler = event => {
+    if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,6}$/)) {
+      // block the input if result does not match
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  };
+  
+
   return (
     <>
       {/* Header */}
@@ -426,6 +468,7 @@ function App() {
                           className="input-box pan-card"
                           type="text"
                           name="pan"
+                          value={pan}
                           maxLength={10}
                           {...register("pan", {
                             required: "This field is required.",
@@ -433,6 +476,7 @@ function App() {
                               value: /^[A-Z]{5}\d{4}[A-Z]{1}$/i,
                               message: "Invalid pan number.",
                             },
+                            onChange:e => setPan(e.target.value.toUpperCase())
                           })}
                         />
                         {errors.pan ? (
@@ -473,7 +517,7 @@ function App() {
                       <div className="checkbox-container">
                         <label
                           className={`custom-checkbox radiobtn ${
-                            employmentState === "salaried" && "active"
+                            employmentState === "salaried" ? "active" : ''
                           }`}
                           htmlFor="salaried"
                         >
@@ -483,7 +527,11 @@ function App() {
                               id="salaried"
                               name="employmentState"
                               value="salaried"
-                              onChange={() => onEmploymentStatus("salaried")}
+                              defaultChecked
+                              {...register('employmentState', {
+                                onChange:(e) => onEmploymentStatus(e.target.value)
+                              })}
+                              
                             />
                             <label htmlFor="salaried"></label>
                           </div>
@@ -491,7 +539,7 @@ function App() {
                         </label>
                         <label
                           className={`custom-checkbox radiobtn ${
-                            employmentState === "selfEmployed" && "active"
+                            employmentState === "selfEmployed" ? "active" : ''
                           }`}
                           htmlFor="selfEmployed"
                         >
@@ -501,9 +549,9 @@ function App() {
                               id="selfEmployed"
                               name="employmentState"
                               value="selfEmployed"
-                              onChange={() =>
-                                onEmploymentStatus("selfEmployed")
-                              }
+                              {...register('employmentState',{
+                                onChange:(e) =>onEmploymentStatus(e.target.value)
+                              })}
                             />
                             <label htmlFor="selfEmployed"></label>
                           </div>
@@ -587,7 +635,7 @@ function App() {
                     <button className="btn-outline" type="button">
                       Back
                     </button>
-                    <button className="btn-primary" type="button">
+                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepTwo)}>
                       Next
                     </button>
                   </div>
@@ -614,7 +662,10 @@ function App() {
                               id="noAccount"
                               name="accountState"
                               value="noAccount"
-                              onChange={() => onAccountCheck("noAccount")}
+                              {...register('accountState',{
+                                onChange:(e) => onAccountCheck(e.target.value)
+                              })}
+                              defaultChecked
                             />
                             <label htmlFor="noAccount"></label>
                           </div>
@@ -632,7 +683,9 @@ function App() {
                               id="salaryAccount"
                               name="accountState"
                               value="salaryAccount"
-                              onChange={() => onAccountCheck("salaryAccount")}
+                              {...register('accountState',{
+                                onChange:(e) => onAccountCheck(e.target.value)
+                              })}
                             />
                             <label htmlFor="salaryAccount"></label>
                           </div>
@@ -650,7 +703,10 @@ function App() {
                               id="scAccount"
                               name="accountState"
                               value="scAccount"
-                              onChange={() => onAccountCheck("scAccount")}
+                              {...register('accountState',{
+                                  onChange: (e) => onAccountCheck(e.target.value)
+                                })
+                              }
                             />
                             <label htmlFor="scAccount"></label>
                           </div>
@@ -668,7 +724,9 @@ function App() {
                               id="loanAccount"
                               name="accountState"
                               value="loanAccount"
-                              onChange={() => onAccountCheck("loanAccount")}
+                              {...register('accountState',{
+                                onChange: (e) => onAccountCheck(e.target.value)
+                              })}
                             />
                             <label htmlFor="loanAccount"></label>
                           </div>
@@ -681,7 +739,7 @@ function App() {
                     <button className="btn-outline" type="button">
                       Back
                     </button>
-                    <button className="btn-primary" type="button">
+                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepThree)}>
                       Next
                     </button>
                   </div>
@@ -703,11 +761,25 @@ function App() {
                           disabled
                         />
                         <input
-                          type="number"
-                          className="input-text"
-                          maxLength={10}
-                          onChange={(e) => onMobileChange(e)}
-                        />
+                            type="number"
+                            className="input-text"
+                            name="mobile"
+                            value={mobile}
+                            {...register('mobile', {
+                              required: 'This is required field.',
+                              minLength: {
+                                value: 10,
+                                message: 'Please enter at least 10 characters.',
+                              },
+                              pattern: {
+                                value: /^[6-9]\d{9}$/,
+                                message:
+                                  'Please enter mobile number starting with 6/7/8/9.',
+                              },
+                              onChange:(e)=>onMobileChange(e)
+                            })}
+                            onKeyPress={e => onMobileKeyHandler(e)}
+                          />
                         <button
                           type="button"
                           className="btn"
@@ -716,12 +788,51 @@ function App() {
                           Get OTP
                         </button>
                       </div>
+                      {errors.mobile ? (
+                            <>
+                              {errors.mobile.type === 'required' && (
+                                <span className="error-msg">
+                                  {errors.mobile.message}
+                                </span>
+                              )}
+                              {errors.mobile.type === 'minLength' && (
+                                <span className="error-msg">
+                                  {errors.mobile.message}
+                                </span>
+                              )}
+                              {errors.mobile.type === 'pattern' && (
+                                <span className="error-msg">
+                                  {errors.mobile.message}
+                                </span>
+                              )}
+                            </>
+                          ) : null}
                       <div className="form-input" style={{ marginTop: 20 }}>
                         <input
-                          type="text"
+                          type="number"
                           className="input-box"
-                          onChange={(e) => verifyOtp(e)}
+                          name="otpInput"
+                          ref={inputOtpReference}
+                          maxLength={6}
+                          onKeyPress={e => onOtpKeyHandler(e)}
+                          {...register('otpInput', {
+                            required: 'This is required field.',
+                            minLength: {
+                              value: 6,
+                              message: 'Please enter at least 6 characters.',
+                            },
+                            onChange:(e)=>verifyOtp(e)
+                          })}
                         />
+                        {errors.otpInput ? (
+                          <>
+                            {errors.otpInput.type === "required" && (
+                              <span className="error-msg">
+                                {errors.otpInput.message}
+                              </span>
+                            )}
+                          </>
+                        ) : null}
                       </div>
                     </div>
                     <div className="form-input">
@@ -735,34 +846,38 @@ function App() {
                           className="input-day"
                           maxength="2"
                           value={day}
+                          name="day"
                           onChange={(e) => onDayChange(e)}
                         />
                         <input
                           type="text"
                           ref={inputMonthReference}
-                          className="input-select"
+                          className="input-month"
                           maxLength="2"
                           value={month}
+                          name="month" 
                           onChange={(e) => onMonthChange(e)}
                         />
-                        {/* <select className="input-select">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                        </select> */}
                         <input
                           type="text"
                           ref={inputYearReference}
                           className="input-year"
                           maxLength="4"
                           value={year}
+                          name="years"
                           onChange={(e) => onYearChange(e)}
                         />
                       </div>
                       {isError && <span className="error-msg">{error}</span>}
                     </div>
                     <div className="terms-condition">
-                      <input type="checkbox" />
+                      <input 
+                        type="checkbox" 
+                        name="terms"
+                        {...register('terms',{
+                          required: 'This field is required',
+                        })}
+                      />
                       <p>
                         I agree to ICICI Bank’s{" "}
                         <a href="" target="_blank">
@@ -774,13 +889,22 @@ function App() {
                         </a>
                       </p>
                     </div>
+                    {errors.terms ? (
+                          <>
+                            {errors.terms.type === "required" && (
+                              <span className="error-msg">
+                                {errors.terms.message}
+                              </span>
+                            )}
+                          </>
+                        ) : null}
                   </div>
                   <div className="btn-grp space-between">
                     <button className="btn-outline" type="button">
                       Back
                     </button>
-                    <button className="btn-primary" type="button">
-                      Next
+                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepFour)}>
+                      Finish
                     </button>
                   </div>
                 </div>
