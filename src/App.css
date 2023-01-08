@@ -1,38 +1,295 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;700;900&display=swap");
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%; /*1rem = 16px; 10px/16px = 62.5% */
+}
+
+img {
+  max-width: 100%;
+}
+
+a:focus,
+a:hover,
+input:focus,
+textarea:focus,
+button:focus {
+  text-decoration: none;
+  outline: none;
+}
+i,
+span,
+a {
+  display: inline-block;
+}
+
+ul,
+ol {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  vertical-align: middle;
+}
+p {
+  font-size: 1.6rem;
+  color: #000000;
+}
+body {
+  font-family: "Mulish", sans-serif;
+  color: #fff;
+  background: #f2740d;
+  /* background: url('../src/assets/images/banner-bg.jpg') no-repeat top center #f2740d;
+  background-size: contain; */
+}
+h2 {
+  font-size: 5.2rem;
+}
+h4 {
+  font-size: 2.5rem;
+}
+.container {
+  width: 100%;
+  max-width: 1199px;
+  margin: 0 auto;
+  position: relative;
+}
+.header {
+  margin: 3rem 0;
+}
+.btn-primary{
+  background: #d75a15;
+  padding: 1.6rem;
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  border-radius: 10px;
+  width: 50%;
+  margin: 2.5rem auto 0;
+  display: block;
+}
+.form-input .label {
+  color: #1e1e1e;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+.form-input .input-box:focus {
+  outline: none;
+}
+.form-input .input-box {
+  font-size: 1.6rem;
+  font-weight: 400;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #e7e7e7;
+  width: 100%;
+  color: #acacac;
+}
+.form-input .input-select:focus {
+  outline: none;
+}
+.form-input .input-select {
+  font-size: 1.6rem;
+  font-weight: 400;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #e7e7e7;
+  width: 100%;
+  appearance: none;
+  color: #acacac;
+}
+.form-input {
+  margin-bottom: 1.5rem;
+}
+.top-section {
+  width: 100%;
+  height: 750px;
+}
+.top-section .content-side {
+  width: 636px;
+  height: 750px;
+  position: relative;
+}
+.top-section .form-side .stepper {
+  width: 21.5rem;
+  margin: 0 auto 2rem;
+}
+.top-section .form-side .stepper ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-section .form-side .stepper ul li::after {
+  content: "";
+  height: 2px;
+  width: 35px;
+  position: absolute;
+  left: 128%;
+  top: 8px;
+  background: #e3e3e3;
+}
+.top-section .form-side .stepper ul li:last-child:after {
+  content: "";
+  width: 0;
+}
+.top-section .form-side .stepper ul li {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+.top-section .form-side .stepper ul li.active {
+  background: #f37e20;
+  border: 1px solid #f2720b;
+}
+.top-section .form-side h3 {
+  font-size: 2rem;
+  color: #f4852b;
+  margin-bottom: 2rem;
+}
+.top-section .form-side {
+  width: 364px;
+  height: 594px;
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 2rem;
+  position: absolute;
+  right: 7rem;
+  top: 4rem;
+}
+.top-section .content-side .anil-kapoor-image {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.top-section .content-side h2 {
+  font-size: 4.8rem;
+  font-weight: 900;
+}
+
+.top-section .content-side h2 span {
+  display: block;
+  font-size: 3.6rem;
+  font-weight: 500;
+}
+.top-section .content-side h3 {
+  font-size: 3.4rem;
+  font-weight: 900;
+  height: 64px;
+  width: 268px;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  align-items: center;
+  background: url("../src/assets/images/text-bg.png") no-repeat center;
+  margin-top: 28px;
+}
+.benefits-section .title p {
+  margin: 1.5rem auto 4.5rem;
+  color: #ececec;
+  font-weight: 500;
+  width: 51rem;
+}
+.benefits-section {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.benefits-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  width: 89.6rem;
+  margin: 0 auto;
+}
+.benefits-container .benefits-box img {
+  display: block;
+  margin: 0 auto;
+}
+.benefits-container .benefits-box {
+  background: #fff;
+  height: 30rem;
+  width: 43.3rem;
+  border-radius: 1.2rem;
+  padding: 3rem;
+  color: #666666;
+  text-align: center;
+  margin-bottom: 3.4rem;
+  border-width: 1px;
+  border-color: rgb(242, 117, 12);
+  border-style: solid;
+}
+.benefits-container .benefits-box p {
+  font-weight: 700;
+}
+.benefits-container .benefits-box h4 {
+  margin: 2.2rem 0 2rem;
+  color: #d75a15;
+  min-height: 6.3rem;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
 }
 
-.App-link {
-  color: #61dafb;
+.art-security-section {
+  width: 89.6rem;
+  margin: 6rem auto 11.9rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 3rem;
+  border-width: 1px;
+  border-color: rgb(255, 255, 255);
+  border-style: solid;
+  padding: 4rem 15.4rem;
+}
+.art-security-section .title h2 {
+  margin: 1.5rem auto 4.5rem;
+  font-size: 4.7rem;
+  color: #d75a15;
+}
+.art-security-section .art-security img {
+  margin: 7.2rem auto 5.2rem;
+}
+.art-security-section .art-security p {
+  font-size: 1.8rem;
+  line-height: 3.626rem;
+  font-weight: 700;
+  color: #666666;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.footer {
+  border-top: 1px solid #f79d4c;
+  padding: 2.5rem 0;
+}
+.footer .box p {
+  color: #949494;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+.footer .box a {
+  color: #000000;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+.footer .box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
