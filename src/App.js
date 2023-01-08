@@ -21,12 +21,13 @@ function App() {
         </div>
       </div>
       {/* Body */}
-      <main className="container">
+      <main>
         <section className="top-section">
+          <div className="container">
           <div className="form-side">
             <div className="stepper">
               <ul>
-                <li></li>
+                <li className="active"></li>
                 <li></li>
                 <li></li>
                 <li></li>
@@ -80,6 +81,7 @@ function App() {
             <div className="anil-kapoor-image">
               <img src={anilKapoor} alt="Anil Kapoor" />
             </div>
+          </div>
           </div>
         </section>
         <section className="benefits-section">

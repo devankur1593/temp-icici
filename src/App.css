@@ -51,8 +51,6 @@ body {
   font-family: "Mulish", sans-serif;
   color: #fff;
   background: #f2740d;
-  /* background: url('../src/assets/images/banner-bg.jpg') no-repeat top center #f2740d;
-  background-size: contain; */
 }
 h2 {
   font-size: 5.2rem;
@@ -75,15 +73,15 @@ h4 {
   color: #fff;
   font-weight: 700;
   border: 0;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 50%;
   margin: 2.5rem auto 0;
   display: block;
 }
 .form-input .label {
   color: #1e1e1e;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 400;
   margin-bottom: 10px;
   display: block;
 }
@@ -119,11 +117,24 @@ h4 {
 .top-section {
   width: 100%;
   height: 750px;
+  background: url('../src/assets/images/banner-bg.jpg') no-repeat top center #f2740d;
+  background-size: cover;
 }
 .top-section .content-side {
   width: 636px;
   height: 750px;
   position: relative;
+}
+.top-section .form-side {
+  width: 36.4rem;
+  height: 60rem;
+  background: #fff;
+  padding: 30px 20px;
+  position: absolute;
+  right: 7rem;
+  top: 4rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+border-radius: 1.4rem;
 }
 .top-section .form-side .stepper {
   width: 21.5rem;
@@ -164,16 +175,7 @@ h4 {
   color: #f4852b;
   margin-bottom: 2rem;
 }
-.top-section .form-side {
-  width: 364px;
-  height: 594px;
-  background: #fff;
-  padding: 30px 20px;
-  border-radius: 2rem;
-  position: absolute;
-  right: 7rem;
-  top: 4rem;
-}
+
 .top-section .content-side .anil-kapoor-image {
   position: absolute;
   right: 0;
@@ -209,6 +211,7 @@ h4 {
 }
 .benefits-section {
   text-align: center;
+  padding-top: 10.8rem;
 }
 .benefits-container {
   display: flex;
