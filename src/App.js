@@ -1,5 +1,10 @@
 import * as React from "react";
 
+// Using an ES6 transpiler like Babel
+import Slider from 'react-rangeslider'
+import 'react-rangeslider/lib/index.css'
+
+
 import iciciBankLogo from "../src/assets/images/icici-bank-logo.svg";
 import refuel from "../src/assets/images/refuel.png";
 import cardPayment from "../src/assets/images/card_payment.png";
@@ -9,9 +14,23 @@ import reward from "../src/assets/images/reward.png";
 import creditCard from "../src/assets/images/credit-card.png";
 import anilKapoor from "../src/assets/images/anil-kapoor.png";
 
+
 import "./App.css";
 
 function App() {
+  const [salaryRange, setSalaryRange] = React.useState();
+
+  const handleChangeHorizontal = value => {
+    console.log('value: ', value)
+    setSalaryRange(value)
+  };
+
+  const horizontalLabels = {
+    0: '0',
+    300000: '300000'
+  }
+
+  const getSalary = value => value;
   return (
     <>
       {/* Header */}
@@ -24,64 +43,120 @@ function App() {
       <main>
         <section className="top-section">
           <div className="container">
-          <div className="form-side">
-            <div className="stepper">
-              <ul>
-                <li className="active"></li>
-                <li></li>
-                <li></li>
-                <li></li>
-              </ul>
+            <div className="form-side">
+              <div className="stepper">
+                <ul>
+                  <li className="active"></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                </ul>
+              </div>
+              <div id="step-one" style={{ display: "none" }}>
+                <h3>How do we get in touch?</h3>
+                <div>
+                  <div className="form-input">
+                    <label className="label">
+                      Full Name<sup>*</sup>
+                    </label>
+                    <input className="input-box" />
+                  </div>
+                  <div className="form-input">
+                    <label className="label">
+                      Email Address<sup>*</sup>
+                    </label>
+                    <input className="input-box" />
+                  </div>
+                  <div className="form-input">
+                    <label className="label">
+                      City<sup>*</sup>
+                    </label>
+                    <select className="input-select">
+                      <option value="one">One</option>
+                      <option value="two">two</option>
+                      <option value="three">three</option>
+                    </select>
+                  </div>
+                  <div className="form-input">
+                    <label className="label">
+                      Pan Card Number<sup>*</sup>
+                    </label>
+                    <input className="input-box" />
+                  </div>
+                  <div>
+                    <button className="btn-primary" type="button">
+                      Apply Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id="step-two">
+                <div>
+                  <div className="form-input">
+                    <label className="label">
+                      What is your type of employment?
+                    </label>
+                    <div className="checkbox-container">
+                      <div className="custom-checkbox">
+                        <div className="circle"></div>
+                        <span>Salaried</span>
+                      </div>
+                      <div className="custom-checkbox active">
+                        <div className="circle"></div>
+                        <span>Self Employed</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-input">
+                    <label className="label">
+                    Salary (Per Month)
+                    </label>
+                    <input className="input-box" value={salaryRange}/>
+                    <div>
+                      <Slider
+                        min={0}
+                        max={300000}
+                        value={salaryRange}
+                        labels={horizontalLabels}
+                        tooltip={false}
+                        format={getSalary}
+                        onChange={handleChangeHorizontal}
+                      />
+                      <div className="label-container">
+                        <span>0</span>
+                        <span>3,00,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-input">
+                    <label className="label">
+                    Company*
+                    </label>
+                    <input className="input-box" />
+                  </div>
+                  <div className="btn-grp space-between">
+                    <button className="btn-outline" type="button">
+                      Back
+                    </button>
+                    <button className="btn-primary" type="button">
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3>How do we get in touch?</h3>
+            <div className="content-side">
               <div>
-              <div className="form-input">
-                <label className="label">
-                  Full Name<sup>*</sup>
-                </label>
-                <input className="input-box" />
+                <h2>
+                  <span>Unlock savings with</span>Platinum Chip <br />
+                  Credit Card
+                </h2>
+                <h3>Lifetime Free</h3>
               </div>
-              <div className="form-input">
-                <label className="label">
-                  Email Address<sup>*</sup>
-                </label>
-                <input className="input-box" />
-              </div>
-              <div className="form-input">
-                <label className="label">
-                  City<sup>*</sup>
-                </label>
-                <select className="input-select">
-                  <option value="one">One</option>
-                  <option value="two">two</option>
-                  <option value="three">three</option>
-                </select>
-              </div>
-              <div className="form-input">
-                <label className="label">
-                  Pan Card Number<sup>*</sup>
-                </label>
-                <input className="input-box" />
-              </div>
-              <div>
-                <button className="btn-primary" type="button">Apply Now</button>
-              </div>
+              <div className="anil-kapoor-image">
+                <img src={anilKapoor} alt="Anil Kapoor" />
               </div>
             </div>
-          </div>
-          <div className="content-side">
-            <div>
-              <h2>
-                <span>Unlock savings with</span>Platinum Chip <br />
-                Credit Card
-              </h2>
-              <h3>Lifetime Free</h3>
-            </div>
-            <div className="anil-kapoor-image">
-              <img src={anilKapoor} alt="Anil Kapoor" />
-            </div>
-          </div>
           </div>
         </section>
         <section className="benefits-section">
