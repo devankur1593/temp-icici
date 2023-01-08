@@ -23,47 +23,47 @@ import "./App.css";
 
 function App() {
   const [pageNumber, setPageNumber] = React.useState(1);
-  const [pageOne, setPageOne] = React.useState('active');
-  const [pageTwo, setPageTwo] = React.useState('');
-  const [pageThree, setPageThree] = React.useState('');
-  const [pageFour, setPageFour] = React.useState('');
-  const [pageStatus, setPageStatus] = React.useState('');
+  const [pageOne, setPageOne] = React.useState("active");
+  const [pageTwo, setPageTwo] = React.useState("");
+  const [pageThree, setPageThree] = React.useState("");
+  const [pageFour, setPageFour] = React.useState("");
+  const [pageStatus, setPageStatus] = React.useState("");
   const [name, setName] = React.useState("");
   const [otherCity, setOtherCity] = React.useState(false);
   const [companies, setCompanies] = React.useState([]);
   const [company, setCompany] = React.useState("");
-  const [salaryRange, setSalaryRange] = React.useState();
+  const [salaryRange, setSalaryRange] = React.useState(0);
+  const [pan, setPan] = React.useState('');
   let cancelToken;
 
   React.useEffect(() => {
     console.log(pageNumber);
-    if(pageNumber === 1){
-      setPageOne('active');
+    if (pageNumber === 1) {
+      setPageOne("active");
     }
-    if(pageNumber === 2){
-      setPageOne('complete');
-      setPageTwo('active');
+    if (pageNumber === 2) {
+      setPageOne("complete");
+      setPageTwo("active");
     }
-    if(pageNumber === 3){
-      setPageOne('complete');
-      setPageTwo('complete');
-      setPageThree('active');
+    if (pageNumber === 3) {
+      setPageOne("complete");
+      setPageTwo("complete");
+      setPageThree("active");
     }
-    if(pageNumber === 4){
-      setPageOne('complete');
-      setPageTwo('complete');
-      setPageThree('complete');
-      setPageFour('active');
+    if (pageNumber === 4) {
+      setPageOne("complete");
+      setPageTwo("complete");
+      setPageThree("complete");
+      setPageFour("active");
     }
-    if(pageNumber === 4){
-      setPageOne('complete');
-      setPageTwo('active');
+    if (pageNumber === 4) {
+      setPageOne("complete");
+      setPageTwo("active");
     }
-    
-  }, [pageNumber])
-  
+  }, [pageNumber]);
+
   const handleChangeHorizontal = (value) => {
-    setSalaryRange(value);
+    value > 0 && setSalaryRange(value);
   };
 
   const horizontalLabels = {
@@ -98,6 +98,10 @@ function App() {
     if (otherCity) {
       clearErrors("otherCity");
     }
+  };
+
+  const onPanChange = e => {
+    setPan(e.target.value.toUpperCase());
   };
 
   const onCompanyChange = async (e) => {
@@ -152,26 +156,39 @@ function App() {
             <div className="form-side">
               <div className="stepper">
                 <ul>
-                  <li className={`${pageOne === 'active' && "active"} ${pageOne === 'complete' && "completed"}`}>
-                     <img src={tickIcon} alt="" /> 
+                  <li
+                    className={`${pageOne === "active" && "active"} ${
+                      pageOne === "complete" && "completed"
+                    }`}
+                  >
+                    <img src={tickIcon} alt="" />
                   </li>
-                  <li className={`${pageTwo === 'active' && "active"} ${pageTwo === 'complete' && "completed"}`}>
-                   <img src={tickIcon} alt="" /> 
+                  <li
+                    className={`${pageTwo === "active" && "active"} ${
+                      pageTwo === "complete" && "completed"
+                    }`}
+                  >
+                    <img src={tickIcon} alt="" />
                   </li>
-                  <li className={`${pageThree === 'active' && "active"} ${pageThree === 'complete' && "completed"}`}>
-                    <img src={tickIcon} alt="" /> 
+                  <li
+                    className={`${pageThree === "active" && "active"} ${
+                      pageThree === "complete" && "completed"
+                    }`}
+                  >
+                    <img src={tickIcon} alt="" />
                   </li>
-                  <li className={`${pageFour === 'active' && "active"} ${pageFour === 'complete' && "completed"}`}>
-                     <img src={tickIcon} alt="" /> 
+                  <li
+                    className={`${pageFour === "active" && "active"} ${
+                      pageFour === "complete" && "completed"
+                    }`}
+                  >
+                    <img src={tickIcon} alt="" />
                   </li>
                 </ul>
               </div>
-              {pageOne === 'active' &&
+              {pageOne === "active" && (
                 <div className="steps-div" id="step-one">
-                  <form
-                    noValidate
-                    className="form"
-                  >
+                  <form noValidate className="form">
                     <div className="form-box">
                       <h3>How do we get in touch?</h3>
 
@@ -196,10 +213,14 @@ function App() {
                         {errors.name ? (
                           <>
                             {errors.name.type === "required" && (
-                              <span className="error-msg">{errors.name.message}</span>
+                              <span className="error-msg">
+                                {errors.name.message}
+                              </span>
                             )}
                             {errors.name.type === "minLength" && (
-                              <span className="error-msg">{errors.name.message}</span>
+                              <span className="error-msg">
+                                {errors.name.message}
+                              </span>
                             )}
                           </>
                         ) : null}
@@ -225,10 +246,14 @@ function App() {
                         {errors.email ? (
                           <>
                             {errors.email.type === "required" && (
-                              <span className="error-msg">{errors.email.message}</span>
+                              <span className="error-msg">
+                                {errors.email.message}
+                              </span>
                             )}
                             {errors.email.type === "pattern" && (
-                              <span className="error-msg">{errors.email.message}</span>
+                              <span className="error-msg">
+                                {errors.email.message}
+                              </span>
                             )}
                           </>
                         ) : null}
@@ -259,7 +284,9 @@ function App() {
                         {errors.city ? (
                           <>
                             {errors.city.type === "required" && (
-                              <span className="error-msg">{errors.city.message}</span>
+                              <span className="error-msg">
+                                {errors.city.message}
+                              </span>
                             )}
                           </>
                         ) : null}
@@ -268,7 +295,7 @@ function App() {
                             className="input-box"
                             type="text"
                             name="otherCity"
-                            style={{marginTop: 20}}
+                            style={{ marginTop: 20 }}
                             {...register("otherCity", {
                               required: "This is required field.",
                             })}
@@ -277,7 +304,9 @@ function App() {
                         {errors.otherCity ? (
                           <>
                             {errors.otherCity.type === "required" && (
-                              <span className="error-msg">{errors.otherCity.message}</span>
+                              <span className="error-msg">
+                                {errors.otherCity.message}
+                              </span>
                             )}
                           </>
                         ) : null}
@@ -303,28 +332,33 @@ function App() {
                         {errors.pan ? (
                           <>
                             {errors.pan.type === "required" && (
-                              <span className="error-msg">{errors.pan.message}</span>
+                              <span className="error-msg">
+                                {errors.pan.message}
+                              </span>
                             )}
                             {errors.pan.type === "pattern" && (
-                              <span className="error-msg">{errors.pan.message}</span>
+                              <span className="error-msg">
+                                {errors.pan.message}
+                              </span>
                             )}
                           </>
                         ) : null}
                       </div>
                     </div>
                     <div className="btn-box">
-                      <button className="btn-primary" type="button" onClick={handleSubmit(onSubmit)}>
+                      <button
+                        className="btn-primary"
+                        type="button"
+                        onClick={handleSubmit(onSubmit)}
+                      >
                         Apply Now
                       </button>
                     </div>
                   </form>
                 </div>
-              }
-              {pageTwo === 'active' && 
-                <div
-                  className="steps-div"
-                  id="step-two"
-                >
+              )}
+              {pageTwo === "active" && (
+                <div className="steps-div" id="step-two">
                   <div className="form-box">
                     <div className="form-input">
                       <label className="label">
@@ -343,7 +377,16 @@ function App() {
                     </div>
                     <div className="form-input">
                       <label className="label">Salary (Per Month)</label>
-                      <input className="input-box" value={salaryRange} />
+                      <input
+                        className="input-box"
+                        type="type"
+                        name="salaryRange"
+                        value={salaryRange}
+                        {...register("salaryRange", {
+                          required: "This field is required.",
+                        })}
+                        readOnly
+                      />
                       <div>
                         <Slider
                           min={0}
@@ -407,12 +450,9 @@ function App() {
                     </button>
                   </div>
                 </div>
-              }
-              {pageThree === 'active' && 
-                <div
-                  className="steps-div"
-                  id="step-three"
-                >
+              )}
+              {pageThree === "active" && (
+                <div className="steps-div" id="step-three">
                   <div className="form-box">
                     <h3>Almost there!</h3>
                     <div className="form-input">
@@ -448,12 +488,9 @@ function App() {
                     </button>
                   </div>
                 </div>
-              }
-              {pageFour === 'active' && 
-                <div
-                  className="steps-div"
-                  id="step-four"
-                >
+              )}
+              {pageFour === "active" && (
+                <div className="steps-div" id="step-four">
                   <div className="form-box">
                     <h3>Almost done!</h3>
                     <div className="form-input">
@@ -513,12 +550,9 @@ function App() {
                     </button>
                   </div>
                 </div>
-              }
-              {pageStatus === 'success' && 
-                <div
-                  className="steps-div"
-                  id="step-success"
-                >
+              )}
+              {pageStatus === "success" && (
+                <div className="steps-div" id="step-success">
                   <div className="result-box">
                     <img src={successIcon} alt="success" />
                     <h4>
@@ -528,12 +562,9 @@ function App() {
                     <p>It will receive your house through mail</p>
                   </div>
                 </div>
-              }
-              {pageStatus === 'failed' && 
-                <div
-                  className="steps-div"
-                  id="step-failed"
-                >
+              )}
+              {pageStatus === "failed" && (
+                <div className="steps-div" id="step-failed">
                   <div className="result-box">
                     <img src={failedIcon} alt="success" />
                     <h4>
@@ -543,7 +574,7 @@ function App() {
                     <p>It will receive your house through mail</p>
                   </div>
                 </div>
-              }
+              )}
             </div>
             <div className="content-side">
               <div>
