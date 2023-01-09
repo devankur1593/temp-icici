@@ -447,23 +447,23 @@ h4 {
   justify-content: space-between;
   align-items: center;
 }
-.rangeslider {
+.salary-carousal .rangeslider {
   background: #e4e4e4;
   touch-action: none;
   box-shadow: none;
   height: 6px;
   margin: 3rem 0;
 }
-.rangeslider-horizontal .rangeslider__fill {
+.salary-carousal .rangeslider-horizontal .rangeslider__fill {
   background-color: #f37e20;
   box-shadow: none;
 }
-.rangeslider .rangeslider__handle {
+.salary-carousal .rangeslider .rangeslider__handle {
   background: #f37e20;
   border: 1px solid #f37e20;
   box-shadow: none;
 }
-.rangeslider-horizontal .rangeslider__handle:after {
+.salary-carousal .rangeslider-horizontal .rangeslider__handle:after {
   background-color: #ffffff;
   box-shadow: none;
 }
@@ -654,18 +654,26 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: flex-start;
   align-items: center;
 }
+@media only screen and (min-width: 1366px) {
+  .top-section .form-side {
+    width: 38rem;
+  }
+}
 @media only screen and (min-width: 991px) and (max-width: 1280px) {
   .top-section .content-side {
     width: 570px;
     height: 750px;
     position: relative;
-}
-.top-section .form-side {
-  right: 3rem;
-}
-.top-section .content-side {
-  width: 570px;
-}
+  }
+  .top-section .form-side {
+    right: 3rem;
+  }
+  .top-section .content-side {
+    width: 570px;
+  }
+  .input-with-btn .input-text {
+    width: 200px;
+  }
 }
 @media only screen and (min-width: 768px) and (max-width: 990px) {
   .top-section {
@@ -826,7 +834,7 @@ input[type="number"]::-webkit-outer-spin-button {
   .custom-checkbox {
     margin: 0 1rem 2rem;
   }
-  .custom-checkbox{
+  .custom-checkbox {
     height: 100px;
   }
   .custom-checkbox,
@@ -839,7 +847,6 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 @media screen and (max-width: 375px) {
-  
   .custom-checkbox,
   .radiobtn label {
     width: 130px;
