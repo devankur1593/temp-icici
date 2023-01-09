@@ -43,6 +43,7 @@ function App() {
   const [error, setError] = React.useState("");
   const [isError, setIsError] = React.useState("");
   const [mobile, setMobile] = React.useState('');
+  const [selfEmployedStatus, setSelfEmployedStatus] = React.useState('Yes');
 
   const inputDayReference = React.useRef(null);
   const inputMonthReference = React.useRef(null);
@@ -576,7 +577,7 @@ function App() {
                       <label className="label">Salary (Per Month)</label>
                       <input
                         className="input-box"
-                        type="type"
+                        type="number"
                         name="salaryRange"
                         value={salaryRange}
                         placeholder=""
@@ -588,7 +589,7 @@ function App() {
                       <div>
                         <Slider
                           min={0}
-                          max={300000}
+                          max={10000000}
                           value={salaryRange}
                           labels={horizontalLabels}
                           tooltip={false}
@@ -597,54 +598,82 @@ function App() {
                         />
                         <div className="label-container">
                           <span>0</span>
-                          <span>3,00,000</span>
+                          <span>1Cr +</span>
                         </div>
                       </div>
                     </div>
                     {/* Company */}
-                    <div className="form-input" style={{ postion: "relative" }}>
-                      <label className="label">
-                        Company<sup>*</sup>
-                      </label>
-                      <input
-                        className="input-box"
-                        type="text"
-                        name="company"
-                        value={company}
-                        placeholder="Enter Compnay"
-                        {...register("company", {
+                    {employmentState === "salaried" ? (
+                      <div className="form-input" style={{ postion: "relative" }}>
+                        <label className="label">
+                          Company<sup>*</sup>
+                        </label>
+                        <input
+                          className="input-box"
+                          type="text"
+                          name="company"
+                          value={company}
+                          placeholder="Enter Compnay"
+                          {...register("company", {
+                            required: "This field is required.",
+                            onChange: (e) => onCompanyChange(e),
+                          })}
+                        />
+                        {errors.company ? (
+                          <>
+                            {errors.company.type === "required" && (
+                              <span className="error-msg">
+                                {errors.company.message}
+                              </span>
+                            )}
+                          </>
+                        ) : null}
+                        {companies.length ? (
+                          <div className="company-selection-container">
+                            <ul className="company-selection">
+                              {companies.map((item) => {
+                                return (
+                                  <li
+                                    key={item.Company_Name}
+                                    onClick={(e) =>
+                                      onListClick(item.Company_Name)
+                                    }
+                                  >
+                                    {item.Company_Name}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : <div className="form-input">
+                    <label className="label" style={{textTransform:'uppercase'}}>
+                     Has your ITR been acknowledged by income tax department?
+                    </label>
+                      <select
+                        className="input-select"
+                        value={selfEmployedStatus}
+                        name="selfEmployedStatus"
+                        {...register("selfEmployedStatus", {
                           required: "This field is required.",
-                          onChange: (e) => onCompanyChange(e),
+                          onChange: (e) => setSelfEmployedStatus(e.target.value),
                         })}
-                      />
-                      {errors.company ? (
+                      >
+                        <option value="Yes" selected>Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                      {errors.selfEmployedStatus ? (
                         <>
-                          {errors.company.type === "required" && (
+                          {errors.selfEmployedStatus.type === "required" && (
                             <span className="error-msg">
-                              {errors.company.message}
+                              {errors.selfEmployedStatus.message}
                             </span>
                           )}
                         </>
                       ) : null}
-                      {companies.length ? (
-                        <div className="company-selection-container">
-                          <ul className="company-selection">
-                            {companies.map((item) => {
-                              return (
-                                <li
-                                  key={item.Company_Name}
-                                  onClick={(e) =>
-                                    onListClick(item.Company_Name)
-                                  }
-                                >
-                                  {item.Company_Name}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      ) : null}
-                    </div>
+                    
+                    </div>}
                   </div>
                   <div className="btn-grp space-between">
                     <button className="btn-outline" type="button" onClick={()=>goBackPage(1)}>
@@ -954,6 +983,7 @@ function App() {
                 </div>
               )}
             </div>
+
             <div className="content-side">
               <div>
                 <h2>
