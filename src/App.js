@@ -34,7 +34,8 @@ function App() {
   const [otherCity, setOtherCity] = React.useState(false);
   const [companies, setCompanies] = React.useState([]);
   const [company, setCompany] = React.useState("");
-  const [salaryRange, setSalaryRange] = React.useState(0);
+  const [companyName, setCompanyName] = React.useState("");
+  const [salaryRange, setSalaryRange] = React.useState('');
   const [pan, setPan] = React.useState("");
   const [employmentState, setEmploymentState] = React.useState("salaried");
   const [accountStatus, setAccountStatus] = React.useState("noAccount");
@@ -46,6 +47,7 @@ function App() {
   const [mobile, setMobile] = React.useState("");
   const [selfEmployedStatus, setSelfEmployedStatus] = React.useState("Yes");
   const [email, setEmail] = React.useState("");
+  const [otpStatus, setOtpStatus] = React.useState(false);
 
   const inputDayReference = React.useRef(null);
   const inputMonthReference = React.useRef(null);
@@ -53,6 +55,14 @@ function App() {
   const inputOtpReference = React.useRef(null);
 
   let cancelToken;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    setValue
+  } = useForm();
 
   React.useEffect(() => {
     if (pageNumber === 1) {
@@ -99,13 +109,6 @@ function App() {
 
   const getSalary = (value) => value;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    clearErrors,
-  } = useForm();
-
   const onNameChange = (e) => {
     const re = /^[a-zA-Z\s]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
@@ -148,18 +151,15 @@ function App() {
           { cancelToken: cancelToken.token }
         );
         const { Data, Count } = serachResults.data.message;
-        if (Count) {
+        if (Count>0) {
           setCompanies(Data);
+        }else{
+          setCompanies([]);
         }
       } catch (error) {}
     } else if (searchText.length < 3) {
       setCompanies([]);
     }
-  };
-
-  const onListClick = (e) => {
-    setCompanies([]);
-    setCompany(() => e);
   };
 
   const onDayChange = (e) => {
@@ -212,7 +212,9 @@ function App() {
         const res = await onSendOtp(mobile);
         if (res.data.message.response.sent) {
           alert("An OTP has been sent to your Mobile number.");
+          setOtpStatus(true)
         }
+
       } catch (error) {
         alert("Error occured while generating OTP.");
       }
@@ -237,7 +239,7 @@ function App() {
           return false;
         }
       } catch (error) {
-        alert(error.data.message);
+        
       }
     }
   };
@@ -290,7 +292,6 @@ function App() {
   };
 
   const goBackPage = (pageNumber) => {
-    console.log(pageNumber);
     setPageNumber(pageNumber);
   };
 
@@ -299,7 +300,7 @@ function App() {
       {/* Header */}
       <div className="header">
         <div className="container">
-          <img src={iciciBankLogo} alt="ICICI Logo" />
+          <img src={iciciBankLogo} alt="ICICI Logo"  height='auto' width='230px' loading="lazy"/>
         </div>
       </div>
       {/* Body */}
@@ -597,25 +598,31 @@ function App() {
                       </label>
                       <input
                         className="input-box"
-                        type="number"
+                        type="text"
                         name="salaryRange"
                         value={salaryRange}
                         autoComplete="off"
-                        placeholder=""
+                        placeholder="0"
                         {...register("salaryRange", {
                           required: "This field is required.",
-                          onChange: (e) => setSalaryRange(e.target.value),
+                          onChange: (e) => {
+                            setSalaryRange(Number(e.target.value));
+                            setValue("salaryRange", Number(salaryRange));
+                          },
                         })}
+                        onKeyPress={(e) => onMobileKeyHandler(e)}
                       />
                       <div className="salary-carousal">
                         <Slider
                           min={0}
                           max={employmentState === "salaried" ? 300000 : 10000000}
-                          value={salaryRange}
+                          value={Number(salaryRange)}
                           labels={horizontalLabels}
                           tooltip={false}
                           format={getSalary}
                           onChange={handleChangeHorizontal}
+                          name="salaryRange"
+                          
                         />
                         <div className="label-container">
                           <span className="amount">
@@ -641,12 +648,16 @@ function App() {
                           className="input-box"
                           type="text"
                           name="company"
-                          value={company}
+                          value={companyName}
                           placeholder="Enter Compnay"
                           autoComplete="off"
                           {...register("company", {
                             required: "This field is required.",
-                            onChange: (e) => onCompanyChange(e),
+                            onChange: (e) => {
+                              onCompanyChange(e)
+                              setCompanyName(e.target.value)
+                              setValue("companyName", e.target.value);
+                            },
                           })}
                         />
                         {errors.company ? (
@@ -664,10 +675,13 @@ function App() {
                               {companies.map((item) => {
                                 return (
                                   <li
+                                    {...register("companyName")}
                                     key={item.Company_Name}
-                                    onClick={(e) =>
-                                      onListClick(item.Company_Name)
-                                    }
+                                    onClick={() => {
+                                      setCompanyName(item.Company_Name);
+                                      setCompanies([]);
+                                      setValue("companyName", item.Company_Name);
+                                    }}
                                   >
                                     {item.Company_Name}
                                   </li>
@@ -687,7 +701,7 @@ function App() {
                         </label>
                         <select
                           className="input-select"
-                          value={selfEmployedStatus}
+                          defaultValue={selfEmployedStatus}
                           name="selfEmployedStatus"
                           {...register("selfEmployedStatus", {
                             required: "This field is required.",
@@ -906,35 +920,37 @@ function App() {
                           )}
                         </>
                       ) : null}
-                      <div className="form-input" style={{ marginTop: 20 }}>
-                        <input
-                          type="number"
-                          className="input-box"
-                          name="otpInput"
-                          ref={inputOtpReference}
-                          maxLength={6}
-                          autoComplete="off"
-                          placeholder="Enter OTP received"
-                          onKeyPress={(e) => onOtpKeyHandler(e)}
-                          {...register("otpInput", {
-                            required: "This is required field.",
-                            minLength: {
-                              value: 6,
-                              message: "Please enter at least 6 characters.",
-                            },
-                            onChange: (e) => verifyOtp(e),
-                          })}
-                        />
-                        {errors.otpInput ? (
-                          <>
-                            {errors.otpInput.type === "required" && (
-                              <span className="error-msg">
-                                {errors.otpInput.message}
-                              </span>
-                            )}
-                          </>
-                        ) : null}
-                      </div>
+                      {otpStatus ? (
+                        <div className="form-input" style={{ marginTop: 20 }}>
+                          <input
+                            type="number"
+                            className="input-box"
+                            name="otpInput"
+                            ref={inputOtpReference}
+                            maxLength={6}
+                            autoComplete="off"
+                            placeholder="Enter OTP received"
+                            onKeyPress={(e) => onOtpKeyHandler(e)}
+                            {...register("otpInput", {
+                              required: "This is required field.",
+                              minLength: {
+                                value: 6,
+                                message: "Please enter at least 6 characters.",
+                              },
+                              onChange: (e) => verifyOtp(e),
+                            })}
+                          />
+                          {errors.otpInput ? (
+                            <>
+                              {errors.otpInput.type === "required" && (
+                                <span className="error-msg">
+                                  {errors.otpInput.message}
+                                </span>
+                              )}
+                            </>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </div>
                     <div className="form-input">
                       <label className="label">
@@ -1028,7 +1044,7 @@ function App() {
                 <div className="steps-div" id="step-success">
                   <div className="result-box">
                     <img src={successIcon} alt="success" />
-                    <h4>You are Eligible for ICICI Bank Credit Card!</h4>
+                    <h4>You are Eligible for <br />ICICI Bank Credit Card!</h4>
                     <p>Thank you for your interest, our executives will connect with you shortly</p>
                   </div>
                 </div>
@@ -1037,11 +1053,8 @@ function App() {
                 <div className="steps-div" id="step-failed">
                   <div className="result-box">
                     <img src={failedIcon} alt="success" />
-                    <h4>
-                      Success! You have successfully applied for an ICICI Bank
-                      Credit Card
-                    </h4>
-                    <p>It will receive your house through mail</p>
+                    <h4>Sorry! You are currently NOT eligible for an <br/>ICICI Bank Credit Card</h4>
+                    <p>We thank you for your time. You may consider re-applying in the future.</p>
                   </div>
                 </div>
               )}
@@ -1056,7 +1069,7 @@ function App() {
                 <h3>Lifetime Free</h3>
               </div>
               <div className="anil-kapoor-image">
-                <img src={anilKapoor} alt="Anil Kapoor" />
+                <img src={anilKapoor} alt="Anil Kapoor"  height='auto' width='auto' />
               </div>
             </div>
           </div>
@@ -1072,7 +1085,7 @@ function App() {
           <div className="benefits-container">
             <div className="benefits-box">
               <div>
-                <img src={refuel} alt="refuel" />
+                <img src={refuel} alt="refuel" height='auto' width='auto'/>
               </div>
               <h4>Fuel Surcharge Waiver</h4>
               <p>
@@ -1082,7 +1095,7 @@ function App() {
             </div>
             <div className="benefits-box">
               <div>
-                <img src={reward} alt="refuel" />
+                <img src={reward} alt="refuel" height='auto' width='auto'/>
               </div>
               <h4>ICICI Bank Reward Points for Gifts and Vouchers</h4>
               <p>
@@ -1092,14 +1105,14 @@ function App() {
             </div>
             <div className="benefits-box">
               <div>
-                <img src={nfcCard} alt="refuel" />
+                <img src={nfcCard} alt="refuel" height='auto' width='auto'/>
               </div>
               <h4>Built-in Contactless Technology</h4>
               <p>Payments made faster and safer than ever before.</p>
             </div>
             <div className="benefits-box">
               <div>
-                <img src={cardPayment} alt="refuel" />
+                <img src={cardPayment} alt="refuel" height='auto' width='auto'/>
               </div>
               <h4>Lifetime Free Platinum Chip Card</h4>
               <p>
@@ -1113,7 +1126,7 @@ function App() {
             <h2>State-of-the-art Security</h2>
           </div>
           <div className="art-security">
-            <img src={creditCard} alt="credit card" />
+            <img src={creditCard} alt="credit card" height='auto' width='auto'/>
             <p>
               The Platinum Chip Credit Card is baked in security, such that
               there’s an additional layer to protect your card from being
