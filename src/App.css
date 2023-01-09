@@ -564,6 +564,42 @@ h4 {
   color: #a31b13;
   font-size: 1.4rem;
 }
+@media only screen and (min-width: 768px) and (max-width: 1280px)  {
+  .top-section {
+    height: auto;
+  }
+  .top-section .form-side {
+    width: 50%;
+    min-height: 60rem;
+    height: auto;
+    right: auto;
+    top: auto;
+    margin: 0 auto 4rem;
+    position: relative;
+  }
+  .top-section .content-side{
+    width: 100%;
+  }
+  .art-security-section, .benefits-container {
+    width: 90%;
+  }
+  .benefits-container .benefits-box {
+    height: 33rem;
+    width: 32.3rem;
+    margin: 2rem;
+  }
+  .benefits-container {
+    justify-content: center;
+    align-items: center;
+  }
+  .footer .box {
+    display: block;
+    text-align: center;
+  }
+  .footer .box p{
+    margin: 2rem 0;
+  }
+}
 @media screen and (max-width: 767px) {
   .container {
     padding: 0;
@@ -660,6 +696,9 @@ h4 {
     text-align: center;
     color: #ffffff;
     margin-bottom: 2rem;
+  }
+  .input-with-btn .input-text{
+    width: 60%;
   }
   .input-with-btn .input-text{
     width: 60%;

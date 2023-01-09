@@ -54,15 +54,21 @@ function App() {
   React.useEffect(() => {
     if (pageNumber === 1) {
       setPageOne("active");
+      setPageTwo("ongoing");
+      setPageThree("ongoing");
+      setPageFour("ongoing");
     }
     if (pageNumber === 2) {
       setPageOne("complete");
       setPageTwo("active");
+      setPageThree("ongoing");
+      setPageFour("ongoing");
     }
     if (pageNumber === 3) {
       setPageOne("complete");
       setPageTwo("complete");
       setPageThree("active");
+      setPageFour("ongoing");
     }
     if (pageNumber === 4) {
       setPageOne("complete");
@@ -97,10 +103,6 @@ function App() {
     clearErrors,
   } = useForm();
 
-  const onSubmit = (d) => {
-    setPageNumber(2);
-  };
-
   const onNameChange = (e) => {
     const re = /^[a-zA-Z\s]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
@@ -123,6 +125,7 @@ function App() {
   const onAccountCheck = (val) => {
     setAccountStatus(val);
   };
+
   const onCompanyChange = async (e) => {
     const searchText = e.target.value;
     setCompany(searchText);
@@ -163,11 +166,6 @@ function App() {
     if (e.target.value === 0 || e.target.value > 31) {
       setIsError(true);
       setError("The day must be between 1 and 31.");
-      return;
-    }
-    if (month === 2 || e.target.value > 28) {
-      setIsError(true);
-      setError("The month must be between 1 and 28.");
       return;
     }
     if (e.target.value > 4) {
@@ -243,23 +241,7 @@ function App() {
     }
   };
 
-  const onStepTwo = (d) => {
-    setPageNumber(3);
-  };
-
-  const onStepThree = (d) => {
-    setPageNumber(4);
-  };
-
-  const onStepFour = (d) => {
-    if(!day || !month || !year){
-      setIsError(true);
-      setError("This field cannot be left empty.");
-    }
-    console.log(d)
-    setPageNumber(5);
-  };
-
+  
   const onMobileChange = e => {
     if (e.target.value.length === 10) {
       setMobile(e.target.value.slice(0, 10));
@@ -276,6 +258,7 @@ function App() {
       return false;
     }
   };
+
   const onOtpKeyHandler = event => {
     if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,6}$/)) {
       // block the input if result does not match
@@ -284,6 +267,32 @@ function App() {
       return false;
     }
   };
+
+  const onApplyNow = (d) => {
+    setPageNumber(2);
+  };
+  
+  const onStepTwo = (d) => {
+    setPageNumber(3);
+  };
+
+  const onStepThree = (d) => {
+    setPageNumber(4);
+  };
+
+  const onStepFour = (d) => {
+    if(!day || !month || !year){
+      setIsError(true);
+      setError("This field cannot be left empty.");
+    }
+    console.log(d)
+    setPageNumber(5);
+  };
+  
+  const goBackPage = (pageNumber) =>{
+    console.log(pageNumber);
+    setPageNumber(pageNumber);
+  }
   
 
   return (
@@ -349,6 +358,7 @@ function App() {
                           type="text"
                           value={name}
                           name="name"
+                          placeholder="Enter name here"
                           {...register("name", {
                             required: "This is required field.",
                             minLength: {
@@ -382,6 +392,7 @@ function App() {
                           className="input-box"
                           type="email"
                           name="email"
+                          placeholder="yourname@example.com"
                           {...register("email", {
                             required: "This field is required.",
                             pattern: {
@@ -418,7 +429,7 @@ function App() {
                             onChange: (e) => onCityChange(e),
                           })}
                         >
-                          <option value="">Select city...</option>
+                          <option value="">Select city</option>
                           <option value="Delhi">Delhi</option>
                           <option value="Mumbai">Mumbai</option>
                           <option value="Chennai">Chennai</option>
@@ -443,6 +454,7 @@ function App() {
                             className="input-box"
                             type="text"
                             name="otherCity"
+                            placeholder="Enter City Name"
                             style={{ marginTop: 20 }}
                             {...register("otherCity", {
                               required: "This is required field.",
@@ -470,6 +482,7 @@ function App() {
                           name="pan"
                           value={pan}
                           maxLength={10}
+                          placeholder="ENTER PAN"
                           {...register("pan", {
                             required: "This field is required.",
                             pattern: {
@@ -499,7 +512,7 @@ function App() {
                       <button
                         className="btn-primary"
                         type="button"
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={handleSubmit(onApplyNow)}
                       >
                         Apply Now
                       </button>
@@ -566,10 +579,11 @@ function App() {
                         type="type"
                         name="salaryRange"
                         value={salaryRange}
+                        placeholder=""
                         {...register("salaryRange", {
                           required: "This field is required.",
+                          onChange: (e)=> setSalaryRange(e.target.value)
                         })}
-                        readOnly
                       />
                       <div>
                         <Slider
@@ -597,6 +611,7 @@ function App() {
                         type="text"
                         name="company"
                         value={company}
+                        placeholder="Enter Compnay"
                         {...register("company", {
                           required: "This field is required.",
                           onChange: (e) => onCompanyChange(e),
@@ -632,7 +647,7 @@ function App() {
                     </div>
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button">
+                    <button className="btn-outline" type="button" onClick={()=>goBackPage(1)}>
                       Back
                     </button>
                     <button className="btn-primary" type="button" onClick={handleSubmit(onStepTwo)}>
@@ -736,7 +751,7 @@ function App() {
                     </div>
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button">
+                    <button className="btn-outline" type="button" onClick={()=>goBackPage(2)}>
                       Back
                     </button>
                     <button className="btn-primary" type="button" onClick={handleSubmit(onStepThree)}>
@@ -765,6 +780,7 @@ function App() {
                             className="input-text"
                             name="mobile"
                             value={mobile}
+                            placeholder="10 digit phone number"
                             {...register('mobile', {
                               required: 'This is required field.',
                               minLength: {
@@ -814,6 +830,7 @@ function App() {
                           name="otpInput"
                           ref={inputOtpReference}
                           maxLength={6}
+                          placeholder="Enter OTP received"
                           onKeyPress={e => onOtpKeyHandler(e)}
                           {...register('otpInput', {
                             required: 'This is required field.',
@@ -847,6 +864,7 @@ function App() {
                           maxength="2"
                           value={day}
                           name="day"
+                          placeholder="DD"
                           onChange={(e) => onDayChange(e)}
                         />
                         <input
@@ -856,6 +874,7 @@ function App() {
                           maxLength="2"
                           value={month}
                           name="month" 
+                          placeholder="MM"
                           onChange={(e) => onMonthChange(e)}
                         />
                         <input
@@ -865,6 +884,7 @@ function App() {
                           maxLength="4"
                           value={year}
                           name="years"
+                          placeholder="YYYY"
                           onChange={(e) => onYearChange(e)}
                         />
                       </div>
@@ -900,7 +920,7 @@ function App() {
                         ) : null}
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button">
+                    <button className="btn-outline" type="button" onClick={()=>goBackPage(3)}>
                       Back
                     </button>
                     <button className="btn-primary" type="button" onClick={handleSubmit(onStepFour)}>
