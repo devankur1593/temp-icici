@@ -6,18 +6,19 @@ import "react-rangeslider/lib/index.css";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import iciciBankLogo from "../src/assets/images/icici-bank-logo.svg";
-import refuel from "../src/assets/images/refuel.png";
-import cardPayment from "../src/assets/images/card_payment.png";
-import nfcCard from "../src/assets/images/nfc_card.png";
-import reward from "../src/assets/images/reward.png";
+import iciciBankLogo from "../src/assets/images/icici-bank-logo.webp";
+import refuel from "../src/assets/images/refuel.svg";
+import cardPayment from "../src/assets/images/card-payment.svg";
+import nfcCard from "../src/assets/images/nfc-card.svg";
+import reward from "../src/assets/images/reward.svg";
 
-import creditCard from "../src/assets/images/credit-card.png";
-import anilKapoor from "../src/assets/images/anil-kapoor.png";
+import creditCard from "../src/assets/images/credit-card.webp";
+import anilKapoor from "../src/assets/images/anil-kapoor.webp";
 
 import successIcon from "../src/assets/images/success.svg";
 import failedIcon from "../src/assets/images/failed.svg";
 import tickIcon from "../src/assets/images/tick-icon.svg";
+import rsIcon from "../src/assets/images/rs-icom.svg";
 
 import "./App.css";
 import { onSendOtp, onVerifyOtp } from "./service/apiService";
@@ -42,8 +43,9 @@ function App() {
   const [year, setYear] = React.useState("");
   const [error, setError] = React.useState("");
   const [isError, setIsError] = React.useState("");
-  const [mobile, setMobile] = React.useState('');
-  const [selfEmployedStatus, setSelfEmployedStatus] = React.useState('Yes');
+  const [mobile, setMobile] = React.useState("");
+  const [selfEmployedStatus, setSelfEmployedStatus] = React.useState("Yes");
+  const [email, setEmail] = React.useState("");
 
   const inputDayReference = React.useRef(null);
   const inputMonthReference = React.useRef(null);
@@ -82,7 +84,7 @@ function App() {
       setPageTwo("complete");
       setPageThree("complete");
       setPageFour("complete");
-      setPageStatus('success')
+      setPageStatus("success");
     }
   }, [pageNumber]);
 
@@ -157,7 +159,7 @@ function App() {
 
   const onListClick = (e) => {
     setCompanies([]);
-    setCompany(()=>e);
+    setCompany(() => e);
   };
 
   const onDayChange = (e) => {
@@ -200,7 +202,7 @@ function App() {
 
     setYear(e.target.value);
   };
-  
+
   const sendOtp = async (mobile) => {
     if (!mobile) {
       return;
@@ -208,8 +210,8 @@ function App() {
     if (mobile.length === 10) {
       try {
         const res = await onSendOtp(mobile);
-        if(res.data.message.response.sent){
-          alert('An OTP has been sent to your Mobile number.');
+        if (res.data.message.response.sent) {
+          alert("An OTP has been sent to your Mobile number.");
         }
       } catch (error) {
         alert("Error occured while generating OTP.");
@@ -218,9 +220,8 @@ function App() {
   };
 
   const verifyOtp = async (e) => {
-
     if (!mobile) {
-      alert('please enter mobile number')
+      alert("please enter mobile number");
       return;
     }
     if (!e.target.value) {
@@ -234,16 +235,14 @@ function App() {
           alert("Please enter valid OTP");
           inputOtpReference.current.focus();
           return false;
-        } 
-
+        }
       } catch (error) {
         alert(error.data.message);
       }
     }
   };
 
-  
-  const onMobileChange = e => {
+  const onMobileChange = (e) => {
     if (e.target.value.length === 10) {
       setMobile(e.target.value.slice(0, 10));
     } else if (e.target.value.length < 10) {
@@ -251,7 +250,7 @@ function App() {
     }
   };
 
-  const onMobileKeyHandler = event => {
+  const onMobileKeyHandler = (event) => {
     if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,10}$/)) {
       // block the input if result does not match
       event.preventDefault();
@@ -260,7 +259,7 @@ function App() {
     }
   };
 
-  const onOtpKeyHandler = event => {
+  const onOtpKeyHandler = (event) => {
     if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,6}$/)) {
       // block the input if result does not match
       event.preventDefault();
@@ -272,7 +271,7 @@ function App() {
   const onApplyNow = (d) => {
     setPageNumber(2);
   };
-  
+
   const onStepTwo = (d) => {
     setPageNumber(3);
   };
@@ -282,19 +281,18 @@ function App() {
   };
 
   const onStepFour = (d) => {
-    if(!day || !month || !year){
+    if (!day || !month || !year) {
       setIsError(true);
       setError("This field cannot be left empty.");
     }
-    console.log(d)
+    console.log(d);
     setPageNumber(5);
   };
-  
-  const goBackPage = (pageNumber) =>{
+
+  const goBackPage = (pageNumber) => {
     console.log(pageNumber);
     setPageNumber(pageNumber);
-  }
-  
+  };
 
   return (
     <>
@@ -360,6 +358,7 @@ function App() {
                           value={name}
                           name="name"
                           placeholder="Enter name here"
+                          autocomplete="off"
                           {...register("name", {
                             required: "This is required field.",
                             minLength: {
@@ -393,6 +392,8 @@ function App() {
                           className="input-box"
                           type="email"
                           name="email"
+                          value={email}
+                          autocomplete="off"
                           placeholder="yourname@example.com"
                           {...register("email", {
                             required: "This field is required.",
@@ -401,8 +402,17 @@ function App() {
                                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                               message: "Please enter a valid email address.",
                             },
+                            onChange: (e) => setEmail(e.target.value),
                           })}
                         />
+                        <datalist>
+                          <option value={`${email}@gmail.com`}>{email}@gmail.com</option>
+                          <option value={`${email}@yahoo.com`}>{email}@yahoo.com</option>
+                          <option value={`${email}@rediffmail.com`}>{email}@rediffmail.com</option>
+                          <option value={`${email}@yahoo.co.in`}>{email}@yahoo.co.in</option>
+                          <option value={`${email}@icloud.com`}>{email}@icloud.com</option>
+                          <option value={`${email}@outlook.com`}>{email}@outlook.com</option>
+                        </datalist>
                         {errors.email ? (
                           <>
                             {errors.email.type === "required" && (
@@ -456,6 +466,7 @@ function App() {
                             type="text"
                             name="otherCity"
                             placeholder="Enter City Name"
+                            autocomplete="off"
                             style={{ marginTop: 20 }}
                             {...register("otherCity", {
                               required: "This is required field.",
@@ -484,13 +495,15 @@ function App() {
                           value={pan}
                           maxLength={10}
                           placeholder="ENTER PAN"
+                          autocomplete="off"
                           {...register("pan", {
                             required: "This field is required.",
                             pattern: {
                               value: /^[A-Z]{5}\d{4}[A-Z]{1}$/i,
                               message: "Invalid pan number.",
                             },
-                            onChange:e => setPan(e.target.value.toUpperCase())
+                            onChange: (e) =>
+                              setPan(e.target.value.toUpperCase()),
                           })}
                         />
                         {errors.pan ? (
@@ -531,7 +544,7 @@ function App() {
                       <div className="checkbox-container">
                         <label
                           className={`custom-checkbox radiobtn ${
-                            employmentState === "salaried" ? "active" : ''
+                            employmentState === "salaried" ? "active" : ""
                           }`}
                           htmlFor="salaried"
                         >
@@ -542,10 +555,10 @@ function App() {
                               name="employmentState"
                               value="salaried"
                               defaultChecked
-                              {...register('employmentState', {
-                                onChange:(e) => onEmploymentStatus(e.target.value)
+                              {...register("employmentState", {
+                                onChange: (e) =>
+                                  onEmploymentStatus(e.target.value),
                               })}
-                              
                             />
                             <label htmlFor="salaried"></label>
                           </div>
@@ -553,7 +566,7 @@ function App() {
                         </label>
                         <label
                           className={`custom-checkbox radiobtn ${
-                            employmentState === "selfEmployed" ? "active" : ''
+                            employmentState === "selfEmployed" ? "active" : ""
                           }`}
                           htmlFor="selfEmployed"
                         >
@@ -563,8 +576,9 @@ function App() {
                               id="selfEmployed"
                               name="employmentState"
                               value="selfEmployed"
-                              {...register('employmentState',{
-                                onChange:(e) =>onEmploymentStatus(e.target.value)
+                              {...register("employmentState", {
+                                onChange: (e) =>
+                                  onEmploymentStatus(e.target.value),
                               })}
                             />
                             <label htmlFor="selfEmployed"></label>
@@ -580,13 +594,14 @@ function App() {
                         type="number"
                         name="salaryRange"
                         value={salaryRange}
+                        autocomplete="off"
                         placeholder=""
                         {...register("salaryRange", {
                           required: "This field is required.",
-                          onChange: (e)=> setSalaryRange(e.target.value)
+                          onChange: (e) => setSalaryRange(e.target.value),
                         })}
                       />
-                      <div>
+                      <div className="salary-carousal">
                         <Slider
                           min={0}
                           max={10000000}
@@ -597,14 +612,21 @@ function App() {
                           onChange={handleChangeHorizontal}
                         />
                         <div className="label-container">
-                          <span>0</span>
-                          <span>1Cr +</span>
+                          <span className="amount">
+                            <img src={rsIcon} alt="rs icon" />0
+                          </span>
+                          <span className="amount">
+                            <img src={rsIcon} alt="rs icon" />1Cr +
+                          </span>
                         </div>
                       </div>
                     </div>
                     {/* Company */}
                     {employmentState === "salaried" ? (
-                      <div className="form-input" style={{ postion: "relative" }}>
+                      <div
+                        className="form-input"
+                        style={{ postion: "relative" }}
+                      >
                         <label className="label">
                           Company<sup>*</sup>
                         </label>
@@ -614,6 +636,7 @@ function App() {
                           name="company"
                           value={company}
                           placeholder="Enter Compnay"
+                          autocomplete="off"
                           {...register("company", {
                             required: "This field is required.",
                             onChange: (e) => onCompanyChange(e),
@@ -647,39 +670,55 @@ function App() {
                           </div>
                         ) : null}
                       </div>
-                    ) : <div className="form-input">
-                    <label className="label" style={{textTransform:'uppercase'}}>
-                     Has your ITR been acknowledged by income tax department?
-                    </label>
-                      <select
-                        className="input-select"
-                        value={selfEmployedStatus}
-                        name="selfEmployedStatus"
-                        {...register("selfEmployedStatus", {
-                          required: "This field is required.",
-                          onChange: (e) => setSelfEmployedStatus(e.target.value),
-                        })}
-                      >
-                        <option value="Yes" selected>Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      {errors.selfEmployedStatus ? (
-                        <>
-                          {errors.selfEmployedStatus.type === "required" && (
-                            <span className="error-msg">
-                              {errors.selfEmployedStatus.message}
-                            </span>
-                          )}
-                        </>
-                      ) : null}
-                    
-                    </div>}
+                    ) : (
+                      <div className="form-input">
+                        <label
+                          className="label"
+                          style={{ textTransform: "uppercase" }}
+                        >
+                          Has your ITR been acknowledged by income tax
+                          department?
+                        </label>
+                        <select
+                          className="input-select"
+                          value={selfEmployedStatus}
+                          name="selfEmployedStatus"
+                          {...register("selfEmployedStatus", {
+                            required: "This field is required.",
+                            onChange: (e) =>
+                              setSelfEmployedStatus(e.target.value),
+                          })}
+                        >
+                          <option value="Yes" selected>
+                            Yes
+                          </option>
+                          <option value="No">No</option>
+                        </select>
+                        {errors.selfEmployedStatus ? (
+                          <>
+                            {errors.selfEmployedStatus.type === "required" && (
+                              <span className="error-msg">
+                                {errors.selfEmployedStatus.message}
+                              </span>
+                            )}
+                          </>
+                        ) : null}
+                      </div>
+                    )}
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button" onClick={()=>goBackPage(1)}>
+                    <button
+                      className="btn-outline"
+                      type="button"
+                      onClick={() => goBackPage(1)}
+                    >
                       Back
                     </button>
-                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepTwo)}>
+                    <button
+                      className="btn-primary"
+                      type="button"
+                      onClick={handleSubmit(onStepTwo)}
+                    >
                       Next
                     </button>
                   </div>
@@ -706,8 +745,8 @@ function App() {
                               id="noAccount"
                               name="accountState"
                               value="noAccount"
-                              {...register('accountState',{
-                                onChange:(e) => onAccountCheck(e.target.value)
+                              {...register("accountState", {
+                                onChange: (e) => onAccountCheck(e.target.value),
                               })}
                               defaultChecked
                             />
@@ -727,8 +766,9 @@ function App() {
                               id="salaryAccount"
                               name="accountState"
                               value="salaryAccount"
-                              {...register('accountState',{
-                                onChange:(e) => onAccountCheck(e.target.value)
+                              autocomplete="off"
+                              {...register("accountState", {
+                                onChange: (e) => onAccountCheck(e.target.value),
                               })}
                             />
                             <label htmlFor="salaryAccount"></label>
@@ -747,10 +787,9 @@ function App() {
                               id="scAccount"
                               name="accountState"
                               value="scAccount"
-                              {...register('accountState',{
-                                  onChange: (e) => onAccountCheck(e.target.value)
-                                })
-                              }
+                              {...register("accountState", {
+                                onChange: (e) => onAccountCheck(e.target.value),
+                              })}
                             />
                             <label htmlFor="scAccount"></label>
                           </div>
@@ -768,8 +807,8 @@ function App() {
                               id="loanAccount"
                               name="accountState"
                               value="loanAccount"
-                              {...register('accountState',{
-                                onChange: (e) => onAccountCheck(e.target.value)
+                              {...register("accountState", {
+                                onChange: (e) => onAccountCheck(e.target.value),
                               })}
                             />
                             <label htmlFor="loanAccount"></label>
@@ -780,10 +819,18 @@ function App() {
                     </div>
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button" onClick={()=>goBackPage(2)}>
+                    <button
+                      className="btn-outline"
+                      type="button"
+                      onClick={() => goBackPage(2)}
+                    >
                       Back
                     </button>
-                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepThree)}>
+                    <button
+                      className="btn-primary"
+                      type="button"
+                      onClick={handleSubmit(onStepThree)}
+                    >
                       Next
                     </button>
                   </div>
@@ -805,26 +852,27 @@ function App() {
                           disabled
                         />
                         <input
-                            type="number"
-                            className="input-text"
-                            name="mobile"
-                            value={mobile}
-                            placeholder="10 digit phone number"
-                            {...register('mobile', {
-                              required: 'This is required field.',
-                              minLength: {
-                                value: 10,
-                                message: 'Please enter at least 10 characters.',
-                              },
-                              pattern: {
-                                value: /^[6-9]\d{9}$/,
-                                message:
-                                  'Please enter mobile number starting with 6/7/8/9.',
-                              },
-                              onChange:(e)=>onMobileChange(e)
-                            })}
-                            onKeyPress={e => onMobileKeyHandler(e)}
-                          />
+                          type="number"
+                          className="input-text"
+                          name="mobile"
+                          value={mobile}
+                          autoComplete="off"
+                          placeholder="10 digit phone number"
+                          {...register("mobile", {
+                            required: "This is required field.",
+                            minLength: {
+                              value: 10,
+                              message: "Please enter at least 10 characters.",
+                            },
+                            pattern: {
+                              value: /^[6-9]\d{9}$/,
+                              message:
+                                "Please enter mobile number starting with 6/7/8/9.",
+                            },
+                            onChange: (e) => onMobileChange(e),
+                          })}
+                          onKeyPress={(e) => onMobileKeyHandler(e)}
+                        />
                         <button
                           type="button"
                           className="btn"
@@ -834,24 +882,24 @@ function App() {
                         </button>
                       </div>
                       {errors.mobile ? (
-                            <>
-                              {errors.mobile.type === 'required' && (
-                                <span className="error-msg">
-                                  {errors.mobile.message}
-                                </span>
-                              )}
-                              {errors.mobile.type === 'minLength' && (
-                                <span className="error-msg">
-                                  {errors.mobile.message}
-                                </span>
-                              )}
-                              {errors.mobile.type === 'pattern' && (
-                                <span className="error-msg">
-                                  {errors.mobile.message}
-                                </span>
-                              )}
-                            </>
-                          ) : null}
+                        <>
+                          {errors.mobile.type === "required" && (
+                            <span className="error-msg">
+                              {errors.mobile.message}
+                            </span>
+                          )}
+                          {errors.mobile.type === "minLength" && (
+                            <span className="error-msg">
+                              {errors.mobile.message}
+                            </span>
+                          )}
+                          {errors.mobile.type === "pattern" && (
+                            <span className="error-msg">
+                              {errors.mobile.message}
+                            </span>
+                          )}
+                        </>
+                      ) : null}
                       <div className="form-input" style={{ marginTop: 20 }}>
                         <input
                           type="number"
@@ -859,15 +907,16 @@ function App() {
                           name="otpInput"
                           ref={inputOtpReference}
                           maxLength={6}
+                          autoComplete="off"
                           placeholder="Enter OTP received"
-                          onKeyPress={e => onOtpKeyHandler(e)}
-                          {...register('otpInput', {
-                            required: 'This is required field.',
+                          onKeyPress={(e) => onOtpKeyHandler(e)}
+                          {...register("otpInput", {
+                            required: "This is required field.",
                             minLength: {
                               value: 6,
-                              message: 'Please enter at least 6 characters.',
+                              message: "Please enter at least 6 characters.",
                             },
-                            onChange:(e)=>verifyOtp(e)
+                            onChange: (e) => verifyOtp(e),
                           })}
                         />
                         {errors.otpInput ? (
@@ -894,6 +943,7 @@ function App() {
                           value={day}
                           name="day"
                           placeholder="DD"
+                          autoComplete="off"
                           onChange={(e) => onDayChange(e)}
                         />
                         <input
@@ -902,8 +952,9 @@ function App() {
                           className="input-month"
                           maxLength="2"
                           value={month}
-                          name="month" 
+                          name="month"
                           placeholder="MM"
+                          autoComplete="off"
                           onChange={(e) => onMonthChange(e)}
                         />
                         <input
@@ -914,17 +965,18 @@ function App() {
                           value={year}
                           name="years"
                           placeholder="YYYY"
+                          autoComplete="off"
                           onChange={(e) => onYearChange(e)}
                         />
                       </div>
                       {isError && <span className="error-msg">{error}</span>}
                     </div>
                     <div className="terms-condition">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         name="terms"
-                        {...register('terms',{
-                          required: 'This field is required',
+                        {...register("terms", {
+                          required: "This field is required",
                         })}
                       />
                       <p>
@@ -939,20 +991,28 @@ function App() {
                       </p>
                     </div>
                     {errors.terms ? (
-                          <>
-                            {errors.terms.type === "required" && (
-                              <span className="error-msg">
-                                {errors.terms.message}
-                              </span>
-                            )}
-                          </>
-                        ) : null}
+                      <>
+                        {errors.terms.type === "required" && (
+                          <span className="error-msg">
+                            {errors.terms.message}
+                          </span>
+                        )}
+                      </>
+                    ) : null}
                   </div>
                   <div className="btn-grp space-between">
-                    <button className="btn-outline" type="button" onClick={()=>goBackPage(3)}>
+                    <button
+                      className="btn-outline"
+                      type="button"
+                      onClick={() => goBackPage(3)}
+                    >
                       Back
                     </button>
-                    <button className="btn-primary" type="button" onClick={handleSubmit(onStepFour)}>
+                    <button
+                      className="btn-primary"
+                      type="button"
+                      onClick={handleSubmit(onStepFour)}
+                    >
                       Finish
                     </button>
                   </div>

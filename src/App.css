@@ -202,7 +202,7 @@ h4 {
 .top-section {
   width: 100%;
   height: 750px;
-  background: url("../src/assets/images/banner-bg.jpg") no-repeat top center
+  background: url("../src/assets/images/banner-bg.webp") no-repeat top center
     #f2740d;
   background-size: cover;
 }
@@ -314,7 +314,7 @@ h4 {
   justify-content: center;
   margin: 0;
   align-items: center;
-  background: url("../src/assets/images/text-bg.png") no-repeat center;
+  background: url("../src/assets/images/text-bg.webp") no-repeat center;
   margin-top: 28px;
 }
 .benefits-section .title p {
@@ -338,6 +338,7 @@ h4 {
 .benefits-container .benefits-box img {
   display: block;
   margin: 0 auto;
+  width: 100px;
 }
 .benefits-container .benefits-box {
   background: #fff;
@@ -734,7 +735,6 @@ h4 {
   background-position: center;
   width: 0;
   height: 0;
-  /* background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+); */
 }
 .radiobtn input[type="radio"] {
   display: none;
@@ -751,8 +751,9 @@ h4 {
   width: 20px;
   height: 20px;
   border: 1px solid #f37e20;
-  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+)
-    #f37e20;
+  /* background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+)
+    #f37e20; */
+  background: url('../src/assets/images/tick-icon.svg') no-repeat center #f37e20;
 }
 
 .company-selection-container {
@@ -783,4 +784,16 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     margin: 0; 
+}
+
+.salary-carousal .label-container .amount img{
+  width: 7px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 4px;
+}
+.salary-carousal .label-container .amount{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
