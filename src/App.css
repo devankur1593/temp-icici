@@ -565,7 +565,96 @@ h4 {
   color: #a31b13;
   font-size: 1.4rem;
 }
-@media only screen and (min-width: 768px) and (max-width: 1280px)  {
+
+.radiobtn {
+  position: relative;
+  display: block;
+}
+.radiobtn label {
+  display: block;
+  cursor: pointer;
+  height: 35px;
+  width: 154px;
+}
+.radiobtn label:after,
+.radiobtn label:before {
+  content: "";
+  position: absolute;
+  left: 65px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #bababa;
+}
+.radiobtn label:before {
+  background: transparent;
+  z-index: 2;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: center;
+  width: 0;
+  height: 0;
+}
+.radiobtn input[type="radio"] {
+  display: none;
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.radiobtn input[type="radio"]:checked + label:before {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #f37e20;
+  background: url("../src/assets/images/tick-icon.svg") no-repeat center #f37e20;
+}
+
+.company-selection-container {
+  height: 120px;
+  overflow: hidden;
+  overflow-y: scroll;
+  margin-top: -0.5rem;
+  padding-top: 1.5rem;
+  position: absolute;
+  top: 100%;
+  background: #fff;
+  width: 100%;
+}
+.company-selection li {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  color: #000000;
+}
+.company-selection {
+  width: 100%;
+  background: #fff;
+  height: auto;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.salary-carousal .label-container .amount img {
+  width: 7px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 4px;
+}
+.salary-carousal .label-container .amount {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
   .top-section {
     height: auto;
   }
@@ -578,10 +667,11 @@ h4 {
     margin: 0 auto 4rem;
     position: relative;
   }
-  .top-section .content-side{
+  .top-section .content-side {
     width: 100%;
   }
-  .art-security-section, .benefits-container {
+  .art-security-section,
+  .benefits-container {
     width: 90%;
   }
   .benefits-container .benefits-box {
@@ -597,7 +687,7 @@ h4 {
     display: block;
     text-align: center;
   }
-  .footer .box p{
+  .footer .box p {
     margin: 2rem 0;
   }
 }
@@ -698,102 +788,30 @@ h4 {
     color: #ffffff;
     margin-bottom: 2rem;
   }
-  .input-with-btn .input-text{
+  .input-with-btn .input-text {
     width: 60%;
   }
-  .input-with-btn .input-text{
+  .input-with-btn .input-text {
     width: 60%;
   }
 }
-.radiobtn {
-  position: relative;
-  display: block;
-}
-.radiobtn label {
-  display: block;
-  cursor: pointer;
-  height: 35px;
-  width: 154px;
-}
-.radiobtn label:after,
-.radiobtn label:before {
-  content: "";
-  position: absolute;
-  left: 65px;
-  top: 15px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid #bababa;
-}
-.radiobtn label:before {
-  background: transparent;
-  z-index: 2;
-  overflow: hidden;
-  background-repeat: no-repeat;
-  background-size: 13px;
-  background-position: center;
-  width: 0;
-  height: 0;
-}
-.radiobtn input[type="radio"] {
-  display: none;
-  position: absolute;
-  width: 100%;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.radiobtn input[type="radio"]:checked + label:after {
-}
-.radiobtn input[type="radio"]:checked + label:before {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #f37e20;
-  /* background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+)
-    #f37e20; */
-  background: url('../src/assets/images/tick-icon.svg') no-repeat center #f37e20;
-}
-
-.company-selection-container {
-  height: 120px;
-  overflow: hidden;
-  overflow-y: scroll;
-  margin-top: -0.5rem;
-  padding-top: 1.5rem;
-  position: absolute;
-  top: 100%;
-  background: #fff;
-  width: 100%;
-}
-.company-selection li {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-  cursor: pointer;
-  color: #000000;
-}
-.company-selection {
-  width: 100%;
-  background: #fff;
-  height: auto;
-}
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; 
-}
-
-.salary-carousal .label-container .amount img{
-  width: 7px;
-  vertical-align: middle;
-  display: inline-block;
-  margin: 0 4px;
-}
-.salary-carousal .label-container .amount{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+@media screen and (max-width: 375px) {
+  .custom-checkbox,.radiobtn label {
+    width: 140px;
+  }
+  .radiobtn label:after, .radiobtn label:before{
+    left: 57px;
+  }
+  .custom-checkbox span{
+    font-size: 1.2rem;
+  }
+  .input-with-select .input-month{
+    width: 95px;
+  }
+  .input-with-select .input-year{
+    width: 100px;
+  }
+  .anil-kapoor-image{
+    width: 95%;
+  }
 }

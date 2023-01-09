@@ -18,7 +18,7 @@ import anilKapoor from "../src/assets/images/anil-kapoor.webp";
 import successIcon from "../src/assets/images/success.svg";
 import failedIcon from "../src/assets/images/failed.svg";
 import tickIcon from "../src/assets/images/tick-icon.svg";
-import rsIcon from "../src/assets/images/rs-icom.svg";
+import rsIcon from "../src/assets/images/rs-icon.svg";
 
 import "./App.css";
 import { onSendOtp, onVerifyOtp } from "./service/apiService";
@@ -358,7 +358,7 @@ function App() {
                           value={name}
                           name="name"
                           placeholder="Enter name here"
-                          autocomplete="off"
+                          autoComplete="off"
                           {...register("name", {
                             required: "This is required field.",
                             minLength: {
@@ -393,7 +393,8 @@ function App() {
                           type="email"
                           name="email"
                           value={email}
-                          autocomplete="off"
+                          list="email-options"
+                          autoComplete="off"
                           placeholder="yourname@example.com"
                           {...register("email", {
                             required: "This field is required.",
@@ -405,14 +406,17 @@ function App() {
                             onChange: (e) => setEmail(e.target.value),
                           })}
                         />
-                        <datalist>
-                          <option value={`${email}@gmail.com`}>{email}@gmail.com</option>
-                          <option value={`${email}@yahoo.com`}>{email}@yahoo.com</option>
-                          <option value={`${email}@rediffmail.com`}>{email}@rediffmail.com</option>
-                          <option value={`${email}@yahoo.co.in`}>{email}@yahoo.co.in</option>
-                          <option value={`${email}@icloud.com`}>{email}@icloud.com</option>
-                          <option value={`${email}@outlook.com`}>{email}@outlook.com</option>
-                        </datalist>
+                        {email.length > 2 ? (
+                          <datalist id="email-options">
+                            <option value={`${email}@gmail.com`}>{email}@gmail.com</option>
+                            <option value={`${email}@yahoo.com`}>{email}@yahoo.com</option>
+                            <option value={`${email}@rediffmail.com`}>{email}@rediffmail.com</option>
+                            <option value={`${email}@yahoo.co.in`}>{email}@yahoo.co.in</option>
+                            <option value={`${email}@icloud.com`}>{email}@icloud.com</option>
+                            <option value={`${email}@outlook.com`}>{email}@outlook.com</option>
+                          </datalist>
+                          ) : null}
+                        
                         {errors.email ? (
                           <>
                             {errors.email.type === "required" && (
@@ -466,7 +470,7 @@ function App() {
                             type="text"
                             name="otherCity"
                             placeholder="Enter City Name"
-                            autocomplete="off"
+                            autoComplete="off"
                             style={{ marginTop: 20 }}
                             {...register("otherCity", {
                               required: "This is required field.",
@@ -495,7 +499,7 @@ function App() {
                           value={pan}
                           maxLength={10}
                           placeholder="ENTER PAN"
-                          autocomplete="off"
+                          autoComplete="off"
                           {...register("pan", {
                             required: "This field is required.",
                             pattern: {
@@ -588,13 +592,15 @@ function App() {
                       </div>
                     </div>
                     <div className="form-input">
-                      <label className="label">Salary (Per Month)</label>
+                      <label className="label">
+                        {employmentState === "salaried" ? 'Salary (Per Month)' : 'Gross Turnover Last Year'}
+                      </label>
                       <input
                         className="input-box"
                         type="number"
                         name="salaryRange"
                         value={salaryRange}
-                        autocomplete="off"
+                        autoComplete="off"
                         placeholder=""
                         {...register("salaryRange", {
                           required: "This field is required.",
@@ -604,7 +610,7 @@ function App() {
                       <div className="salary-carousal">
                         <Slider
                           min={0}
-                          max={10000000}
+                          max={employmentState === "salaried" ? 300000 : 10000000}
                           value={salaryRange}
                           labels={horizontalLabels}
                           tooltip={false}
@@ -616,7 +622,8 @@ function App() {
                             <img src={rsIcon} alt="rs icon" />0
                           </span>
                           <span className="amount">
-                            <img src={rsIcon} alt="rs icon" />1Cr +
+                            <img src={rsIcon} alt="rs icon" />
+                            {employmentState === "salaried" ? '3,00,000+' : '1Cr+'}
                           </span>
                         </div>
                       </div>
@@ -636,7 +643,7 @@ function App() {
                           name="company"
                           value={company}
                           placeholder="Enter Compnay"
-                          autocomplete="off"
+                          autoComplete="off"
                           {...register("company", {
                             required: "This field is required.",
                             onChange: (e) => onCompanyChange(e),
@@ -674,7 +681,6 @@ function App() {
                       <div className="form-input">
                         <label
                           className="label"
-                          style={{ textTransform: "uppercase" }}
                         >
                           Has your ITR been acknowledged by income tax
                           department?
@@ -766,7 +772,7 @@ function App() {
                               id="salaryAccount"
                               name="accountState"
                               value="salaryAccount"
-                              autocomplete="off"
+                              autoComplete="off"
                               {...register("accountState", {
                                 onChange: (e) => onAccountCheck(e.target.value),
                               })}
@@ -1022,11 +1028,8 @@ function App() {
                 <div className="steps-div" id="step-success">
                   <div className="result-box">
                     <img src={successIcon} alt="success" />
-                    <h4>
-                      Success! You have successfully applied for an ICICI Bank
-                      Credit Card
-                    </h4>
-                    <p>It will receive your house through mail</p>
+                    <h4>You are Eligible for ICICI Bank Credit Card!</h4>
+                    <p>Thank you for your interest, our executives will connect with you shortly</p>
                   </div>
                 </div>
               )}
