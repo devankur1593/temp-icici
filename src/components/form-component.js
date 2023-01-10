@@ -171,7 +171,7 @@ const FormComponent = () => {
       setError("The day must be between 1 and 31.");
       return;
     }
-    if (e.target.value >= 3) {
+    if (e.target.value >= 4) {
       inputMonthReference.current.focus();
     }
   };
@@ -185,7 +185,7 @@ const FormComponent = () => {
       setError("The month must be between 1 and 12.");
       return;
     }
-    if (e.target.value >= 1) {
+    if (e.target.value >= 2) {
       inputYearReference.current.focus();
     }
   };
@@ -212,6 +212,7 @@ const FormComponent = () => {
       return false;
     }
   };
+
   const monthKeyHandler = (e) => {
     if (!`${e.target.value}${e.key}`.match(/^[0-9]{0,4}$/)) {
       // block the input if result does not match

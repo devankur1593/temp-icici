@@ -26,10 +26,8 @@ function App() {
             <h4 className="top-header">
               Apply for a ICICI Bank Platinum Credit Card
             </h4>
-            <TopContentComponent />
             <FormComponent />
-
-            
+            <TopContentComponent />
           </div>
         </section>
         <BenefitsComponent />

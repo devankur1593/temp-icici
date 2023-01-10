@@ -14,7 +14,7 @@ const TopContentComponent = () => {
           <h3>Lifetime Free</h3>
         </div>
         <div className="anil-kapoor-image">
-          <img src={anilKapoor} alt="Anil Kapoor" height="auto" width="auto" />
+          <img src={anilKapoor} alt="Anil Kapoor" height="593px" width="393px" />
         </div>
       </div>
     </>
