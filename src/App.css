@@ -794,7 +794,7 @@ input[type="number"]::-webkit-outer-spin-button {
     position: relative;
     margin-top: 4rem;
     padding-top: 4rem;
-    background: url("../src/assets/images/banner-mobile-bg.png") no-repeat
+    background: url("../src/assets/images/banner-mobile-bg.webp") no-repeat
       center bottom;
     background-size: cover;
   }

@@ -200,6 +200,12 @@ const FormComponent = () => {
       setError("The year must be less than current year.");
       return;
     }
+    
+    if ((e.target.value.length == 4 && e.target.value < 1900) ) {
+      setIsError(true);
+      setError("The year must be greater than 1900.");
+      return;
+    }
 
     setYear(e.target.value);
   };
@@ -302,6 +308,12 @@ const FormComponent = () => {
     let userCity, dob;
     obj.otherCity ? userCity = obj?.otherCity : userCity = obj?.city;
     dob = `${day}-${month}-${year}`;
+
+    if(day == ""  || month == "" || year == ""){
+      setIsError(true);
+      setError("Date of Birth is required");
+      return;
+    }
     
     const dataObj = {
       accountState: obj?.accountState,
@@ -316,9 +328,8 @@ const FormComponent = () => {
       selfEmployedStatus: obj?.employmentState === 'salaried' ? "No": obj?.selfEmployedStatus,
       otpInput: obj?.otpInput,
       dob:dob
-
     };
-    console.log(dataObj)
+       
     setPageNumber(5);
     setPageStatus('success');
   };
@@ -642,6 +653,15 @@ const FormComponent = () => {
                   })}
                   onKeyPress={(e) => onMobileKeyHandler(e)}
                 />
+                  {errors.salaryRange ? (
+                    <>
+                      {errors.salaryRange.type === "required" && (
+                        <span className="error-msg">
+                          {errors.salaryRange.message}
+                        </span>
+                      )}
+                    </>
+                  ) : null}
                 <div className="salary-carousal">
                   <Slider
                     min={0}
@@ -980,35 +1000,60 @@ const FormComponent = () => {
                     value={day}
                     name="day"
                     placeholder="DD"
-                    autoComplete="off"
-                    onChange={(e) => onDayChange(e)}
+                    autoComplete="off"                    
                     onKeyPress={(e) => monthKeyHandler(e)}
+                    {...register("day", {
+                      required: "This is required field.",
+                      onChange: (e) => {
+                        onDayChange(e);
+                      },
+                    })}
                   />
                   <input
-                    type="text"
+                    type="number"
                     ref={inputMonthReference}
                     className="input-month"
                     maxLength="2"
                     value={month}
                     name="month"
                     placeholder="MM"
-                    autoComplete="off"
-                    onChange={(e) => onMonthChange(e)}
+                    autoComplete="off"                  
                     onKeyPress={(e) => monthKeyHandler(e)}
+                    {...register("month", {
+                      required: "This is required field.",
+                      onChange: (e) => {
+                        onMonthChange(e);
+                      },
+                    })}
                   />
                   <input
-                    type="text"
+                    type="number"
                     ref={inputYearReference}
                     className="input-year"
                     maxLength="4"
                     value={year}
                     name="years"
                     placeholder="YYYY"
-                    autoComplete="off"
-                    onChange={(e) => onYearChange(e)}
+                    autoComplete="off"                   
                     onKeyPress={(e) => yearKeyHandler(e)}
+                    {...register("years", {
+                      required: "This is required field.",
+                      onChange: (e) => {
+                        onYearChange(e);
+                      },
+                    })}
                   />
                 </div>
+               {(errors.day || errors.month || errors.years) ? (
+                      <>
+                        {(errors.day?.type === "required" || errors.month?.type === "required" || errors.years?.type === "required") && (
+                          <span className="error-msg">
+                            {"Date of Birth is required field."}
+                          </span>
+                        )}
+                      </>
+                    ) : null}
+                    
                 {isError && <span className="error-msg">{error}</span>}
               </div>
               <div className="terms-condition">
@@ -1021,11 +1066,11 @@ const FormComponent = () => {
                 />
                 <p>
                   I agree to ICICI Bank’s{" "}
-                  <a href="" target="_blank">
+                  <a href="https://www.icicibank.com/terms-condition/credit-card-terms-and-conditions.page?_ga=2.219407065.1527723375.1673242573-603367429.1672897298&_gac=1.181594643.1673242573.EAIaIQobChMI67DziqWo_AIVhwVyCh2KwAF8EAAYASAAEgLjTvD_BwE" target="_blank">
                     Terms & Conditions
                   </a>{" "}
                   and{" "}
-                  <a href="" target="">
+                  <a href="https://www.icicibank.com/managed-assets/docs/personal/cards/MITC_cc.pdf?_ga=2.241273666.1527723375.1673242573-603367429.1672897298&_gac=1.216154658.1673242573.EAIaIQobChMI67DziqWo_AIVhwVyCh2KwAF8EAAYASAAEgLjTvD_BwE" target="_blank">
                     Most Important Terms & Conditions
                   </a>
                 </p>
