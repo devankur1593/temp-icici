@@ -43,6 +43,7 @@ const FormComponent = () => {
   const [isEmailEmpty, setIsEmailEmpty] = useState();
   const [otherCity, setOtherCity] = useState(false);
   const [otpStatus, setOtpStatus] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(true);
 
   const inputDayReference = useRef(null);
   const inputMonthReference = useRef(null);
@@ -90,6 +91,7 @@ const FormComponent = () => {
       setPageThree("complete");
       setPageFour("complete");
     }
+       
   }, [pageNumber]);
 
   const handleChangeHorizontal = (value) => {
@@ -171,9 +173,15 @@ const FormComponent = () => {
       setError("The day must be between 1 and 31.");
       return;
     }
-    if (e.target.value >= 4) {
-      inputMonthReference.current.focus();
+
+    if (e.target.value >= 4) { 
+        if(e.target.value < 10 && e.target.value.charAt(0) != 0){
+          e.target.value = 0 + e.target.value;
+          setDay(e.target.value);
+      }    
+      document.getElementsByName('month')[0].focus();
     }
+   
   };
 
   const onMonthChange = (e) => {
@@ -185,9 +193,13 @@ const FormComponent = () => {
       setError("The month must be between 1 and 12.");
       return;
     }
-    if (e.target.value >= 2) {
-      inputYearReference.current.focus();
-    }
+    if (e.target.value >= 2) { 
+      if(e.target.value < 10 && e.target.value.charAt(0) != 0){
+        e.target.value = 0 + e.target.value;
+        setMonth(e.target.value);
+    }    
+    document.getElementsByName('years')[0].focus();
+  }
   };
 
   const onYearChange = (e) => {
@@ -220,13 +232,27 @@ const FormComponent = () => {
   };
 
   const monthKeyHandler = (e) => {
-    if (!`${e.target.value}${e.key}`.match(/^[0-9]{0,4}$/)) {
+    if (!`${e.target.value}${e.key}`.match(/^[0-9]{0,2}$/)) {
       // block the input if result does not match
       e.preventDefault();
       e.stopPropagation();
+      
+      return false;
+    }    
+  };
+
+  const dayKeyHandler = (e) => {
+    if (!`${e.target.value}${e.key}`.match(/^[0-9]{0,2}$/)) {
+      // block the input if result does not match
+      e.preventDefault();
+      e.stopPropagation();          
       return false;
     }
+
+   
   };
+
+  
 
   const sendOtp = async (mobile) => {
     if (!mobile) {
@@ -259,8 +285,11 @@ const FormComponent = () => {
         const res = await onVerifyOtp(mobile, e.target.value);
         if (res.data.message === "Failure Occured, please check logs") {
           alert("Please enter valid OTP");
-          inputOtpReference.current.focus();
+          document.getElementsByName("otpInput")[0].focus();
           return false;
+        }
+        else{
+          setOtpVerified(true);
         }
       } catch (error) {}
     }
@@ -272,6 +301,7 @@ const FormComponent = () => {
     } else if (e.target.value.length < 10) {
       setMobile(e.target.value);
     }
+    
   };
 
   const onMobileKeyHandler = (event) => {
@@ -304,6 +334,15 @@ const FormComponent = () => {
     setPageNumber(4);
   };
 
+  const checkSpecialChar =(e)=>{
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    //var key = String.fromCharCode(!e.key ? e.which : e.key);
+    if (!regex.test(e.key)) {
+      e.preventDefault();
+       return false;
+  }
+ };
+
   const onSubmitForm = (obj) => {
     let userCity, dob;
     obj.otherCity ? userCity = obj?.otherCity : userCity = obj?.city;
@@ -313,6 +352,11 @@ const FormComponent = () => {
       setIsError(true);
       setError("Date of Birth is required");
       return;
+    }
+
+    if(otpStatus == false){
+        setOtpVerified(false);
+        return;
     }
     
     const dataObj = {
@@ -330,8 +374,8 @@ const FormComponent = () => {
       dob:dob
     };
        
-    setPageNumber(5);
-    setPageStatus('success');
+      setPageNumber(5);
+      setPageStatus('success');
   };
 
   const goBackPage = (pageNumber) => {
@@ -397,7 +441,7 @@ const FormComponent = () => {
                         message: "Please enter at least 3 characters.",
                       },
                       onChange: (e) => onNameChange(e),
-                    })}
+                    })}                   
                   />
                   {errors.name ? (
                     <>
@@ -549,6 +593,7 @@ const FormComponent = () => {
                       },
                       onChange: (e) => setPan(e.target.value.toUpperCase()),
                     })}
+                    onKeyDown={(e)=>checkSpecialChar(e)}
                   />
                   {errors.pan ? (
                     <>
@@ -639,7 +684,7 @@ const FormComponent = () => {
                 </label>
                 <input
                   className="input-box"
-                  type="text"
+                  type="number"
                   name="salaryRange"
                   value={salaryRange}
                   autoComplete="off"
@@ -975,33 +1020,42 @@ const FormComponent = () => {
                         onChange: (e) => verifyOtp(e),
                       })}
                     />
-                    {errors.otpInput ? (
+                    
+                  </div>
+                ) : null}
+              </div>
+              {errors.otpInput ? (
                       <>
                         {errors.otpInput.type === "required" && (
                           <span className="error-msg">
-                            {errors.otpInput.message}
+                            {""}
                           </span>
                         )}
                       </>
                     ) : null}
-                  </div>
-                ) : null}
-              </div>
+                    {otpVerified == false ? (
+                      <>
+                         <span className="error-msg">
+                            {"A One-Time-Password (OTP) is required to verify your mobile number."}
+                          </span>
+                        
+                      </>
+                    ) : null}
               <div className="form-input">
                 <label className="label">
                   Date of Birth<sup>*</sup>
                 </label>
                 <div className="input-with-select">
                   <input
-                    type="text"
+                    type="number"
                     ref={inputDayReference}
                     className="input-day"
-                    maxength="2"
+                    maxLength="2"
                     value={day}
                     name="day"
                     placeholder="DD"
-                    autoComplete="off"                    
-                    onKeyPress={(e) => monthKeyHandler(e)}
+                    autoComplete="off"
+                    onKeyPress={(e) => dayKeyHandler(e)}
                     {...register("day", {
                       required: "This is required field.",
                       onChange: (e) => {
@@ -1017,7 +1071,7 @@ const FormComponent = () => {
                     value={month}
                     name="month"
                     placeholder="MM"
-                    autoComplete="off"                  
+                    autoComplete="off" 
                     onKeyPress={(e) => monthKeyHandler(e)}
                     {...register("month", {
                       required: "This is required field.",
@@ -1034,7 +1088,7 @@ const FormComponent = () => {
                     value={year}
                     name="years"
                     placeholder="YYYY"
-                    autoComplete="off"                   
+                    autoComplete="off"                                   
                     onKeyPress={(e) => yearKeyHandler(e)}
                     {...register("years", {
                       required: "This is required field.",
